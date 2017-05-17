@@ -78,4 +78,52 @@ class BougStoryReadAccess
     {
         return $this->note;
     }
+
+    /**
+     * Set boug
+     *
+     * @param \HDB\CoreBundle\Entity\Boug $boug
+     *
+     * @return BougStoryReadAccess
+     */
+    public function setBoug(\HDB\CoreBundle\Entity\Boug $boug)
+    {
+        $this->boug = $boug;
+
+        return $this;
+    }
+
+    /**
+     * Get boug
+     *
+     * @return \HDB\CoreBundle\Entity\Boug
+     */
+    public function getBoug()
+    {
+        return $this->boug;
+    }
+
+    /**
+     * Set story
+     *
+     * @param \HDB\CoreBundle\Entity\Story $story
+     *
+     * @return BougStoryReadAccess
+     */
+    public function setStory(\HDB\CoreBundle\Entity\Story $story)
+    {
+        $this->story = $story;
+
+        return $this;
+    }
+
+    /**
+     * Get story
+     *
+     * @return \HDB\CoreBundle\Entity\Story
+     */
+    public function getStory()
+    {
+        return $this->story;
+    }
 }

@@ -35,6 +35,27 @@ class FriendsGroup
      */
     private $dateCreation;
 
+    /**
+     * @var array
+     *
+     * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\Story", mappedBy="groups")
+     */
+    private $stories;
+
+    /**
+     * @var array
+     *
+     * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\Boug", mappedBy="groups")
+     */
+    private $members;
+
+    /**
+     * @var array
+     *
+     * @ORM\ManyToOne(targetEntity="HDB\CoreBundle\Entity\Boug", inversedBy="groupsManaged")
+     */
+    private $manager;
+
 
     /**
      * Get id
@@ -92,5 +113,107 @@ class FriendsGroup
     public function getDateCreation()
     {
         return $this->dateCreation;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->stories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->members = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add story
+     *
+     * @param \HDB\CoreBundle\Entity\Story $story
+     *
+     * @return FriendsGroup
+     */
+    public function addStory(\HDB\CoreBundle\Entity\Story $story)
+    {
+        $this->stories[] = $story;
+
+        return $this;
+    }
+
+    /**
+     * Remove story
+     *
+     * @param \HDB\CoreBundle\Entity\Story $story
+     */
+    public function removeStory(\HDB\CoreBundle\Entity\Story $story)
+    {
+        $this->stories->removeElement($story);
+    }
+
+    /**
+     * Get stories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStories()
+    {
+        return $this->stories;
+    }
+
+    /**
+     * Add member
+     *
+     * @param \HDB\CoreBundle\Entity\Boug $member
+     *
+     * @return FriendsGroup
+     */
+    public function addMember(\HDB\CoreBundle\Entity\Boug $member)
+    {
+        $memeber->addGroup($this);
+        $this->members[] = $member;
+
+        return $this;
+    }
+
+    /**
+     * Remove member
+     *
+     * @param \HDB\CoreBundle\Entity\Boug $member
+     */
+    public function removeMember(\HDB\CoreBundle\Entity\Boug $member)
+    {
+        $group->removeGroup($this);
+        $this->members->removeElement($member);
+    }
+
+    /**
+     * Get members
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMembers()
+    {
+        return $this->members;
+    }
+
+    /**
+     * Set manager
+     *
+     * @param \HDB\CoreBundle\Entity\Boug $manager
+     *
+     * @return FriendsGroup
+     */
+    public function setManager(\HDB\CoreBundle\Entity\Boug $manager = null)
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Get manager
+     *
+     * @return \HDB\CoreBundle\Entity\Boug
+     */
+    public function getManager()
+    {
+        return $this->manager;
     }
 }

@@ -35,6 +35,27 @@ class FriendsGroup
      */
     private $dateCreation;
 
+    /**
+     * @var array
+     *
+     * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\Story", mappedBy="groups")
+     */
+    private $stories;
+
+    /**
+     * @var array
+     *
+     * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\Boug", mappedBy="groups")
+     */
+    private $members;
+
+    /**
+     * @var array
+     *
+     * @ORM\ManyToOne(targetEntity="HDB\CoreBundle\Entity\Boug", inversedBy="groupsManaged")
+     */
+    private $manager;
+
 
     /**
      * Get id
@@ -94,4 +115,3 @@ class FriendsGroup
         return $this->dateCreation;
     }
 }
-

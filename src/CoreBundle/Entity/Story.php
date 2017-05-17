@@ -58,6 +58,29 @@ class Story
     private $bougStoryReadAccess;
 
     /**
+     * @var BougStoryIsCharacter
+     *
+     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $bougStoryIsCharacter;
+
+    /**
+     * @var Boug
+     *
+     * @ORM\ManyToOne(targetEntity="HDB\CoreBundle\Entity\Boug", inversedBy="stories")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
+
+    /**
+     * @var array
+     *
+     * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\Story", inversedBy="stories")
+     */
+    private $groups;
+
+    /**
      * Get id
      *
      * @return int
@@ -179,6 +202,7 @@ class Story
      */
     public function addBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
     {
+        $bougStoryReadAccess->setStory($this);
         $this->bougStoryReadAccess[] = $bougStoryReadAccess;
 
         return $this;
@@ -203,5 +227,100 @@ class Story
     public function getBougStoryReadAccess()
     {
         return $this->bougStoryReadAccess;
+    }
+
+    /**
+     * Add bougStoryIsCharacter
+     *
+     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
+     *
+     * @return Story
+     */
+    public function addBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
+    {
+        $bougStoryIsCharacter->setStory($this);
+        $this->bougStoryIsCharacter[] = $bougStoryIsCharacter;
+
+        return $this;
+    }
+
+    /**
+     * Remove bougStoryIsCharacter
+     *
+     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
+     */
+    public function removeBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
+    {
+        $this->bougStoryIsCharacter->removeElement($bougStoryIsCharacter);
+    }
+
+    /**
+     * Get bougStoryIsCharacter
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBougStoryIsCharacter()
+    {
+        return $this->bougStoryIsCharacter;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \HDB\CoreBundle\Entity\Boug $owner
+     *
+     * @return Story
+     */
+    public function setOwner(\HDB\CoreBundle\Entity\Boug $owner)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \HDB\CoreBundle\Entity\Boug
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Add group
+     *
+     * @param \HDB\CoreBundle\Entity\Story $group
+     *
+     * @return Story
+     */
+    public function addGroup(\HDB\CoreBundle\Entity\Story $group)
+    {
+        $group->addStory($this);
+        $this->groups[] = $group;
+
+        return $this;
+    }
+
+    /**
+     * Remove group
+     *
+     * @param \HDB\CoreBundle\Entity\Story $group
+     */
+    public function removeGroup(\HDB\CoreBundle\Entity\Story $group)
+    {
+        $group->removeStory($this);
+        $this->groups->removeElement($group);
+    }
+
+    /**
+     * Get groups
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
     }
 }

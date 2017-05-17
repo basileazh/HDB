@@ -86,6 +86,50 @@ class Boug
     private $bougStoryReadAccess;
 
     /**
+     * @var BougStoryIsCharacter
+     *
+     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $bougStoryIsCharacter;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Story", mappedBy="owner")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $stories;
+
+    /**
+    * @var array
+    *
+    * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Friends", mappedBy="boug1")
+    */
+    private $friendsAdderOf;
+
+    /**
+    * @var array
+    *
+    * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Friends", mappedBy="boug2")
+    */
+    private $friendsAddedBy;
+
+    /**
+    * @var array
+    *
+    * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\FriendsGroup", inversedBy="members")
+    */
+    private $groups;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\FriendsGroup", mappedBy="manager")
+     */
+    private $groupsManaged;
+
+    /**
      * Get id
      *
      * @return int
@@ -285,5 +329,80 @@ class Boug
     public function getIsActive()
     {
         return $this->isActive;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->bougStoryReadAccess = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add bougStoryReadAccess
+     *
+     * @param \HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
+     *
+     * @return Boug
+     */
+    public function addBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
+    {
+        $this->bougStoryReadAccess[] = $bougStoryReadAccess;
+
+        return $this;
+    }
+
+    /**
+     * Remove bougStoryReadAccess
+     *
+     * @param \HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
+     */
+    public function removeBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
+    {
+        $this->bougStoryReadAccess->removeElement($bougStoryReadAccess);
+    }
+
+    /**
+     * Get bougStoryReadAccess
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBougStoryReadAccess()
+    {
+        return $this->bougStoryReadAccess;
+    }
+
+    /**
+     * Add bougStoryIsCharacter
+     *
+     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
+     *
+     * @return Boug
+     */
+    public function addBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
+    {
+        $this->bougStoryIsCharacter[] = $bougStoryIsCharacter;
+
+        return $this;
+    }
+
+    /**
+     * Remove bougStoryIsCharacter
+     *
+     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
+     */
+    public function removeBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
+    {
+        $this->bougStoryIsCharacter->removeElement($bougStoryIsCharacter);
+    }
+
+    /**
+     * Get bougStoryIsCharacter
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBougStoryIsCharacter()
+    {
+        return $this->bougStoryIsCharacter;
     }
 }
