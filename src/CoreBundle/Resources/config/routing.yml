@@ -5,3 +5,7 @@ core_homepage:
 core_friendsgroup:
     path:     /
     defaults: { _controller: CoreBundle:FriendsGroup:index }
+
+core_friendsgroup_creation:
+    path:     /
+    defaults: { _controller: CoreBundle:FriendsGroup:creation }
