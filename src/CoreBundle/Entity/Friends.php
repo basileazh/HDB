@@ -31,7 +31,7 @@ class Friends
     /**
      * @var Boug
      *
-     * @ORM\ManyToOne(targetEntity="HDB\CoreBundle\Entity\Boug", inversedBy="friendsAdderOf")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="friendsAdderOf")
      * @ORM\JoinColumn(nullable=false)
      */
     private $boug1;
@@ -39,7 +39,7 @@ class Friends
     /**
      * @var Boug
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Boug", mappedBy="friendsAddedBy")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Boug", mappedBy="friendsAddedBy")
      * @ORM\JoinColumn(nullable=false)
      */
     private $boug2;
@@ -88,11 +88,11 @@ class Friends
     /**
      * Set boug1
      *
-     * @param \HDB\CoreBundle\Entity\Boug $boug1
+     * @param \CoreBundle\Entity\Boug $boug1
      *
      * @return Friends
      */
-    public function setBoug1(\HDB\CoreBundle\Entity\Boug $boug1)
+    public function setBoug1(\CoreBundle\Entity\Boug $boug1)
     {
         $this->boug1 = $boug1;
 
@@ -102,7 +102,7 @@ class Friends
     /**
      * Get boug1
      *
-     * @return \HDB\CoreBundle\Entity\Boug
+     * @return \CoreBundle\Entity\Boug
      */
     public function getBoug1()
     {
@@ -112,11 +112,11 @@ class Friends
     /**
      * Add boug2
      *
-     * @param \HDB\CoreBundle\Entity\Boug $boug2
+     * @param \CoreBundle\Entity\Boug $boug2
      *
      * @return Friends
      */
-    public function addBoug2(\HDB\CoreBundle\Entity\Boug $boug2)
+    public function addBoug2(\CoreBundle\Entity\Boug $boug2)
     {
         $this->boug2[] = $boug2;
 
@@ -126,9 +126,9 @@ class Friends
     /**
      * Remove boug2
      *
-     * @param \HDB\CoreBundle\Entity\Boug $boug2
+     * @param \CoreBundle\Entity\Boug $boug2
      */
-    public function removeBoug2(\HDB\CoreBundle\Entity\Boug $boug2)
+    public function removeBoug2(\CoreBundle\Entity\Boug $boug2)
     {
         $this->boug2->removeElement($boug2);
     }

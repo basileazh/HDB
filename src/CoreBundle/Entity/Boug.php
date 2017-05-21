@@ -80,15 +80,15 @@ class Boug
     /**
      * @var BougStoryReadAccess
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $bougStoryReadAccess;
+    private $storiesAccess;
 
     /**
      * @var BougStoryIsCharacter
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
      * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryIsCharacter;
@@ -96,7 +96,7 @@ class Boug
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Story", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Story", mappedBy="owner")
      * @ORM\JoinColumn(nullable=false)
      */
     private $stories;
@@ -104,28 +104,28 @@ class Boug
     /**
     * @var array
     *
-    * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Friends", mappedBy="boug1")
+    * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Friends", mappedBy="boug1")
     */
     private $friendsAdderOf;
 
     /**
     * @var array
     *
-    * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Friends", mappedBy="boug2")
+    * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Friends", mappedBy="boug2")
     */
     private $friendsAddedBy;
 
     /**
     * @var array
     *
-    * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\FriendsGroup", inversedBy="members")
+    * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\FriendsGroup", inversedBy="members")
     */
     private $groups;
 
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\FriendsGroup", mappedBy="manager")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\FriendsGroup", mappedBy="manager")
      */
     private $groupsManaged;
 
@@ -341,11 +341,11 @@ class Boug
     /**
      * Add bougStoryReadAccess
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
+     * @param \CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
      *
      * @return Boug
      */
-    public function addBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
+    public function addBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
     {
         $bougStoryReadAccess->setBoug($this);
         $this->bougStoryReadAccess[] = $bougStoryReadAccess;
@@ -356,9 +356,9 @@ class Boug
     /**
      * Remove bougStoryReadAccess
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
+     * @param \CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
      */
-    public function removeBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
+    public function removeBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
     {
         $this->bougStoryReadAccess->removeElement($bougStoryReadAccess);
     }
@@ -376,11 +376,11 @@ class Boug
     /**
      * Add bougStoryIsCharacter
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
+     * @param \CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
      *
      * @return Boug
      */
-    public function addBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
+    public function addBougStoryIsCharacter(\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
     {
         $bougStoryIsCharacter->setBoug($this);
         $this->bougStoryIsCharacter[] = $bougStoryIsCharacter;
@@ -391,9 +391,9 @@ class Boug
     /**
      * Remove bougStoryIsCharacter
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
+     * @param \CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
      */
-    public function removeBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
+    public function removeBougStoryIsCharacter(\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
     {
         $this->bougStoryIsCharacter->removeElement($bougStoryIsCharacter);
     }
@@ -411,11 +411,11 @@ class Boug
     /**
      * Add story
      *
-     * @param \HDB\CoreBundle\Entity\Story $story
+     * @param \CoreBundle\Entity\Story $story
      *
      * @return Boug
      */
-    public function addStory(\HDB\CoreBundle\Entity\Story $story)
+    public function addStory(\CoreBundle\Entity\Story $story)
     {
         $story->setOwner($this);
         $this->stories[] = $story;
@@ -426,9 +426,9 @@ class Boug
     /**
      * Remove story
      *
-     * @param \HDB\CoreBundle\Entity\Story $story
+     * @param \CoreBundle\Entity\Story $story
      */
-    public function removeStory(\HDB\CoreBundle\Entity\Story $story)
+    public function removeStory(\CoreBundle\Entity\Story $story)
     {
         $story->setOwner(null);
         $this->stories->removeElement($story);
@@ -447,11 +447,11 @@ class Boug
     /**
      * Add friendsAdderOf
      *
-     * @param \HDB\CoreBundle\Entity\Friends $friendsAdderOf
+     * @param \CoreBundle\Entity\Friends $friendsAdderOf
      *
      * @return Boug
      */
-    public function addFriendsAdderOf(\HDB\CoreBundle\Entity\Friends $friendsAdderOf)
+    public function addFriendsAdderOf(\CoreBundle\Entity\Friends $friendsAdderOf)
     {
         $friendsAdderOf->setBoug1($this);
         $this->friendsAdderOf[] = $friendsAdderOf;
@@ -462,9 +462,9 @@ class Boug
     /**
      * Remove friendsAdderOf
      *
-     * @param \HDB\CoreBundle\Entity\Friends $friendsAdderOf
+     * @param \CoreBundle\Entity\Friends $friendsAdderOf
      */
-    public function removeFriendsAdderOf(\HDB\CoreBundle\Entity\Friends $friendsAdderOf)
+    public function removeFriendsAdderOf(\CoreBundle\Entity\Friends $friendsAdderOf)
     {
         $friendsAdderOf->setBoug1(null);
         $this->friendsAdderOf->removeElement($friendsAdderOf);
@@ -483,11 +483,11 @@ class Boug
     /**
      * Add friendsAddedBy
      *
-     * @param \HDB\CoreBundle\Entity\Friends $friendsAddedBy
+     * @param \CoreBundle\Entity\Friends $friendsAddedBy
      *
      * @return Boug
      */
-    public function addFriendsAddedBy(\HDB\CoreBundle\Entity\Friends $friendsAddedBy)
+    public function addFriendsAddedBy(\CoreBundle\Entity\Friends $friendsAddedBy)
     {
         $friendsAddedBy->setBoug2($this);
         $this->friendsAddedBy[] = $friendsAddedBy;
@@ -498,9 +498,9 @@ class Boug
     /**
      * Remove friendsAddedBy
      *
-     * @param \HDB\CoreBundle\Entity\Friends $friendsAddedBy
+     * @param \CoreBundle\Entity\Friends $friendsAddedBy
      */
-    public function removeFriendsAddedBy(\HDB\CoreBundle\Entity\Friends $friendsAddedBy)
+    public function removeFriendsAddedBy(\CoreBundle\Entity\Friends $friendsAddedBy)
     {
         $friendsAddedBy->setBoug2(null);
         $this->friendsAddedBy->removeElement($friendsAddedBy);
@@ -519,11 +519,11 @@ class Boug
     /**
      * Add group
      *
-     * @param \HDB\CoreBundle\Entity\FriendsGroup $group
+     * @param \CoreBundle\Entity\FriendsGroup $group
      *
      * @return Boug
      */
-    public function addGroup(\HDB\CoreBundle\Entity\FriendsGroup $group)
+    public function addGroup(\CoreBundle\Entity\FriendsGroup $group)
     {
         $this->groups[] = $group;
 
@@ -533,9 +533,9 @@ class Boug
     /**
      * Remove group
      *
-     * @param \HDB\CoreBundle\Entity\FriendsGroup $group
+     * @param \CoreBundle\Entity\FriendsGroup $group
      */
-    public function removeGroup(\HDB\CoreBundle\Entity\FriendsGroup $group)
+    public function removeGroup(\CoreBundle\Entity\FriendsGroup $group)
     {
         $this->groups->removeElement($group);
     }
@@ -553,11 +553,11 @@ class Boug
     /**
      * Add groupsManaged
      *
-     * @param \HDB\CoreBundle\Entity\FriendsGroup $groupsManaged
+     * @param \CoreBundle\Entity\FriendsGroup $groupsManaged
      *
      * @return Boug
      */
-    public function addGroupsManaged(\HDB\CoreBundle\Entity\FriendsGroup $groupsManaged)
+    public function addGroupsManaged(\CoreBundle\Entity\FriendsGroup $groupsManaged)
     {
         $groupsManaged->setManager($this);
         $this->groupsManaged[] = $groupsManaged;
@@ -568,9 +568,9 @@ class Boug
     /**
      * Remove groupsManaged
      *
-     * @param \HDB\CoreBundle\Entity\FriendsGroup $groupsManaged
+     * @param \CoreBundle\Entity\FriendsGroup $groupsManaged
      */
-    public function removeGroupsManaged(\HDB\CoreBundle\Entity\FriendsGroup $groupsManaged)
+    public function removeGroupsManaged(\CoreBundle\Entity\FriendsGroup $groupsManaged)
     {
         $this->groupsManaged->removeElement($groupsManaged);
     }

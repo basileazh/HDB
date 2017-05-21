@@ -52,7 +52,7 @@ class Story
     /**
      * @var BougStoryReadAccess
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug")
      * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryReadAccess;
@@ -60,7 +60,7 @@ class Story
     /**
      * @var BougStoryIsCharacter
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
      * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryIsCharacter;
@@ -68,7 +68,7 @@ class Story
     /**
      * @var Boug
      *
-     * @ORM\ManyToOne(targetEntity="HDB\CoreBundle\Entity\Boug", inversedBy="stories")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="stories")
      * @ORM\JoinColumn(nullable=false)
      */
     private $owner;
@@ -76,7 +76,7 @@ class Story
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\Story", inversedBy="stories")
+     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Story", inversedBy="stories")
      */
     private $groups;
 
@@ -196,11 +196,11 @@ class Story
     /**
      * Add bougStoryReadAccess
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
+     * @param \CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
      *
      * @return Story
      */
-    public function addBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
+    public function addBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
     {
         $bougStoryReadAccess->setStory($this);
         $this->bougStoryReadAccess[] = $bougStoryReadAccess;
@@ -211,9 +211,9 @@ class Story
     /**
      * Remove bougStoryReadAccess
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
+     * @param \CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
      */
-    public function removeBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
+    public function removeBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
     {
          # $bougStoryReadAccess(null);
         $this->bougStoryReadAccess->removeElement($bougStoryReadAccess);
@@ -232,11 +232,11 @@ class Story
     /**
      * Add bougStoryIsCharacter
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
+     * @param \CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
      *
      * @return Story
      */
-    public function addBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
+    public function addBougStoryIsCharacter(\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
     {
         $bougStoryIsCharacter->setStory($this);
         $this->bougStoryIsCharacter[] = $bougStoryIsCharacter;
@@ -247,9 +247,9 @@ class Story
     /**
      * Remove bougStoryIsCharacter
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
+     * @param \CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
      */
-    public function removeBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
+    public function removeBougStoryIsCharacter(\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
     {
         $this->bougStoryIsCharacter->removeElement($bougStoryIsCharacter);
     }
@@ -267,11 +267,11 @@ class Story
     /**
      * Set owner
      *
-     * @param \HDB\CoreBundle\Entity\Boug $owner
+     * @param \CoreBundle\Entity\Boug $owner
      *
      * @return Story
      */
-    public function setOwner(\HDB\CoreBundle\Entity\Boug $owner)
+    public function setOwner(\CoreBundle\Entity\Boug $owner)
     {
         $this->owner = $owner;
 
@@ -281,7 +281,7 @@ class Story
     /**
      * Get owner
      *
-     * @return \HDB\CoreBundle\Entity\Boug
+     * @return \CoreBundle\Entity\Boug
      */
     public function getOwner()
     {
@@ -291,11 +291,11 @@ class Story
     /**
      * Add group
      *
-     * @param \HDB\CoreBundle\Entity\Story $group
+     * @param \CoreBundle\Entity\Story $group
      *
      * @return Story
      */
-    public function addGroup(\HDB\CoreBundle\Entity\Story $group)
+    public function addGroup(\CoreBundle\Entity\Story $group)
     {
         $group->addStory($this);
         $this->groups[] = $group;
@@ -306,9 +306,9 @@ class Story
     /**
      * Remove group
      *
-     * @param \HDB\CoreBundle\Entity\Story $group
+     * @param \CoreBundle\Entity\Story $group
      */
-    public function removeGroup(\HDB\CoreBundle\Entity\Story $group)
+    public function removeGroup(\CoreBundle\Entity\Story $group)
     {
         $group->removeStory($this);
         $this->groups->removeElement($group);

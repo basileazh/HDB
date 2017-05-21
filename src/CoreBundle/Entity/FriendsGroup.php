@@ -38,21 +38,21 @@ class FriendsGroup
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\Story", mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Story", mappedBy="groups")
      */
     private $stories;
 
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\Boug", mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Boug", mappedBy="groups")
      */
     private $members;
 
     /**
      * @var array
      *
-     * @ORM\ManyToOne(targetEntity="HDB\CoreBundle\Entity\Boug", inversedBy="groupsManaged")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="groupsManaged")
      */
     private $manager;
 
@@ -126,11 +126,11 @@ class FriendsGroup
     /**
      * Add story
      *
-     * @param \HDB\CoreBundle\Entity\Story $story
+     * @param \CoreBundle\Entity\Story $story
      *
      * @return FriendsGroup
      */
-    public function addStory(\HDB\CoreBundle\Entity\Story $story)
+    public function addStory(\CoreBundle\Entity\Story $story)
     {
         $this->stories[] = $story;
 
@@ -140,9 +140,9 @@ class FriendsGroup
     /**
      * Remove story
      *
-     * @param \HDB\CoreBundle\Entity\Story $story
+     * @param \CoreBundle\Entity\Story $story
      */
-    public function removeStory(\HDB\CoreBundle\Entity\Story $story)
+    public function removeStory(\CoreBundle\Entity\Story $story)
     {
         $this->stories->removeElement($story);
     }
@@ -160,11 +160,11 @@ class FriendsGroup
     /**
      * Add member
      *
-     * @param \HDB\CoreBundle\Entity\Boug $member
+     * @param \CoreBundle\Entity\Boug $member
      *
      * @return FriendsGroup
      */
-    public function addMember(\HDB\CoreBundle\Entity\Boug $member)
+    public function addMember(\CoreBundle\Entity\Boug $member)
     {
         $memeber->addGroup($this);
         $this->members[] = $member;
@@ -175,9 +175,9 @@ class FriendsGroup
     /**
      * Remove member
      *
-     * @param \HDB\CoreBundle\Entity\Boug $member
+     * @param \CoreBundle\Entity\Boug $member
      */
-    public function removeMember(\HDB\CoreBundle\Entity\Boug $member)
+    public function removeMember(\CoreBundle\Entity\Boug $member)
     {
         $group->removeGroup($this);
         $this->members->removeElement($member);
@@ -196,11 +196,11 @@ class FriendsGroup
     /**
      * Set manager
      *
-     * @param \HDB\CoreBundle\Entity\Boug $manager
+     * @param \CoreBundle\Entity\Boug $manager
      *
      * @return FriendsGroup
      */
-    public function setManager(\HDB\CoreBundle\Entity\Boug $manager = null)
+    public function setManager(\CoreBundle\Entity\Boug $manager = null)
     {
         $this->manager = $manager;
 
@@ -210,7 +210,7 @@ class FriendsGroup
     /**
      * Get manager
      *
-     * @return \HDB\CoreBundle\Entity\Boug
+     * @return \CoreBundle\Entity\Boug
      */
     public function getManager()
     {

@@ -24,7 +24,7 @@ class BougStoryReadAccess
     /**
      * @var Boug
      *
-     * @ORM\ManyToOne(targetEntity="HDB\CoreBundle\Entity\Boug", inversedBy="storyAccess")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="storiesAccess")
      * @ORM\JoinColumn(nullable=false)
      */
     private $boug;
@@ -32,7 +32,7 @@ class BougStoryReadAccess
     /**
      * @var Story
      *
-     * @ORM\ManyToOne(targetEntity="HDB\CoreBundle\Entity\Story", inversedBy="bougAccess")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Story", inversedBy="bougAccess")
      * @ORM\JoinColumn(nullable=false)
      */
     private $story;
@@ -82,11 +82,11 @@ class BougStoryReadAccess
     /**
      * Set boug
      *
-     * @param \HDB\CoreBundle\Entity\Boug $boug
+     * @param \CoreBundle\Entity\Boug $boug
      *
      * @return BougStoryReadAccess
      */
-    public function setBoug(\HDB\CoreBundle\Entity\Boug $boug)
+    public function setBoug(\CoreBundle\Entity\Boug $boug)
     {
         $this->boug = $boug;
 
@@ -96,7 +96,7 @@ class BougStoryReadAccess
     /**
      * Get boug
      *
-     * @return \HDB\CoreBundle\Entity\Boug
+     * @return \CoreBundle\Entity\Boug
      */
     public function getBoug()
     {
@@ -106,11 +106,11 @@ class BougStoryReadAccess
     /**
      * Set story
      *
-     * @param \HDB\CoreBundle\Entity\Story $story
+     * @param \CoreBundle\Entity\Story $story
      *
      * @return BougStoryReadAccess
      */
-    public function setStory(\HDB\CoreBundle\Entity\Story $story)
+    public function setStory(\CoreBundle\Entity\Story $story)
     {
         $this->story = $story;
 
@@ -120,7 +120,7 @@ class BougStoryReadAccess
     /**
      * Get story
      *
-     * @return \HDB\CoreBundle\Entity\Story
+     * @return \CoreBundle\Entity\Story
      */
     public function getStory()
     {
