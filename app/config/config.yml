@@ -11,7 +11,7 @@ parameters:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -98,6 +98,7 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+
 # Stof\DoctrineExtensionsBundle configuration
 stof_doctrine_extensions:
     default_locale: fr
@@ -107,3 +108,14 @@ stof_doctrine_extensions:
             timestampable: false # not needed: listeners are not enabled by default
         other:
             timestampable: true
+
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+    firewall_name: main
+    user_class: CoreBundle\Entity\Boug
+    from_email:
+        address: "arnoud.j.vanhuele@gmail.com"
+        sender_name: "HDB_noreply"
+
+

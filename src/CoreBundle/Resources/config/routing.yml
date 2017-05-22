@@ -1,3 +1,6 @@
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
 core_homepage:
     path:     /
     defaults: { _controller: CoreBundle:HomePage:index }
@@ -13,3 +16,9 @@ core_friendsgroup_creation:
 core_story_add:
     path:   /story/add
     defaults: {_controller: CoreBundle:Story:add}
+
+fos_user_registration_confirmed:
+    path: /registration/confirmed
+    defaults: { _controller: CoreBundle:HomePage:index }
+
+

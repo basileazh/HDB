@@ -2,7 +2,9 @@
 
 namespace CoreBundle\Entity;
 
+// use Symfony\Bridge\Doctrine\Tests\Fixtures\User;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * Boug
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="boug")
  * @ORM\Entity(repositoryClass="CoreBundle\Repository\BougRepository")
  */
-class Boug
+class Boug extends BaseUser
 {
     /**
      * @var int
@@ -19,14 +21,14 @@ class Boug
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="Name", type="string", length=255)
      */
-    private $name;
+    public $name;
 
     /**
      * @var string
@@ -40,14 +42,8 @@ class Boug
      *
      * @ORM\Column(name="Login", type="string", length=255, unique=true)
      */
-    private $login;
+    // private $login; @TODO : dégager
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Email", type="string", length=255, unique=true)
-     */
-    private $email;
 
     /**
      * @var \DateTime
@@ -80,15 +76,15 @@ class Boug
     /**
      * @var BougStoryReadAccess
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $bougStoryReadAccess;
+    private $storiesAccess;
 
     /**
      * @var BougStoryIsCharacter
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
      * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryIsCharacter;
@@ -96,7 +92,7 @@ class Boug
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Story", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Story", mappedBy="owner")
      * @ORM\JoinColumn(nullable=false)
      */
     private $stories;
@@ -104,28 +100,28 @@ class Boug
     /**
     * @var array
     *
-    * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Friends", mappedBy="boug1")
+    * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Friends", mappedBy="boug1")
     */
     private $friendsAdderOf;
 
     /**
     * @var array
     *
-    * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Friends", mappedBy="boug2")
+    * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Friends", mappedBy="boug2")
     */
     private $friendsAddedBy;
 
     /**
     * @var array
     *
-    * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\FriendsGroup", inversedBy="members")
+    * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\FriendsGroup", inversedBy="members")
     */
-    private $groups;
+    private $friendsGroups;
 
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\FriendsGroup", mappedBy="manager")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\FriendsGroup", mappedBy="manager")
      */
     private $groupsManaged;
 
@@ -187,222 +183,29 @@ class Boug
         return $this->firstName;
     }
 
-    /**
-     * Set login
-     *
-     * @param string $login
-     *
-     * @return Boug
-     */
-    public function setLogin($login)
-    {
-        $this->login = $login;
+//TODO : dégager
+    // /**
+    //  * Set login
+    //  *
+    //  * @param string $login
+    //  *
+    //  * @return Boug
+    //  */
+    // public function setLogin($login)
+    // {
+    //     $this->login = $login;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get login
-     *
-     * @return string
-     */
-    public function getLogin()
-    {
-        return $this->login;
-    }
+    // /**
+    //  * Get login
+    //  *
+    //  * @return string
+    //  */
+    // public function getLogin()
+    // {
+    //     return $this->login;
+    // }
 
-    /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return Boug
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set dateRegistration
-     *
-     * @param \DateTime $dateRegistration
-     *
-     * @return Boug
-     */
-    public function setDateRegistration($dateRegistration)
-    {
-        $this->dateRegistration = $dateRegistration;
-
-        return $this;
-    }
-
-    /**
-     * Get dateRegistration
-     *
-     * @return \DateTime
-     */
-    public function getDateRegistration()
-    {
-        return $this->dateRegistration;
-    }
-
-    /**
-     * Set dateBirth
-     *
-     * @param \DateTime $dateBirth
-     *
-     * @return Boug
-     */
-    public function setDateBirth($dateBirth)
-    {
-        $this->dateBirth = $dateBirth;
-
-        return $this;
-    }
-
-    /**
-     * Get dateBirth
-     *
-     * @return \DateTime
-     */
-    public function getDateBirth()
-    {
-        return $this->dateBirth;
-    }
-
-    /**
-     * Set isAdmin
-     *
-     * @param boolean $isAdmin
-     *
-     * @return Boug
-     */
-    public function setIsAdmin($isAdmin)
-    {
-        $this->isAdmin = $isAdmin;
-
-        return $this;
-    }
-
-    /**
-     * Get isAdmin
-     *
-     * @return bool
-     */
-    public function getIsAdmin()
-    {
-        return $this->isAdmin;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     *
-     * @return Boug
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return bool
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->bougStoryReadAccess = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add bougStoryReadAccess
-     *
-     * @param \HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
-     *
-     * @return Boug
-     */
-    public function addBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
-    {
-        $this->bougStoryReadAccess[] = $bougStoryReadAccess;
-
-        return $this;
-    }
-
-    /**
-     * Remove bougStoryReadAccess
-     *
-     * @param \HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
-     */
-    public function removeBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
-    {
-        $this->bougStoryReadAccess->removeElement($bougStoryReadAccess);
-    }
-
-    /**
-     * Get bougStoryReadAccess
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBougStoryReadAccess()
-    {
-        return $this->bougStoryReadAccess;
-    }
-
-    /**
-     * Add bougStoryIsCharacter
-     *
-     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
-     *
-     * @return Boug
-     */
-    public function addBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
-    {
-        $this->bougStoryIsCharacter[] = $bougStoryIsCharacter;
-
-        return $this;
-    }
-
-    /**
-     * Remove bougStoryIsCharacter
-     *
-     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
-     */
-    public function removeBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
-    {
-        $this->bougStoryIsCharacter->removeElement($bougStoryIsCharacter);
-    }
-
-    /**
-     * Get bougStoryIsCharacter
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBougStoryIsCharacter()
-    {
-        return $this->bougStoryIsCharacter;
-    }
 }

@@ -2,8 +2,10 @@
 
 namespace CoreBundle\Entity;
 
+// use Symfony\Bridge\Doctrine\Tests\Fixtures\User;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * Boug
@@ -11,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="boug")
  * @ORM\Entity(repositoryClass="CoreBundle\Repository\BougRepository")
  */
-class Boug
+class Boug extends BaseUser
 {
     /**
      * @var int
@@ -20,7 +22,7 @@ class Boug
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -37,21 +39,7 @@ class Boug
     private $firstName;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="Login", type="string", length=255, unique=true)
-     */
-    private $login;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Email", type="string", length=255, unique=true)
-     */
-    private $email;
-
-    /**
-     * @var \DateTime $dateRegistration
+     * @var \DateTime
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="DateRegistration", type="datetime")
@@ -64,20 +52,6 @@ class Boug
      * @ORM\Column(name="DateBirth", type="datetime")
      */
     private $dateBirth;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="IsAdmin", type="boolean")
-     */
-    private $isAdmin;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="IsActive", type="boolean")
-     */
-    private $isActive;
 
     /**
      * @var BougStoryReadAccess
@@ -125,7 +99,7 @@ class Boug
     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\FriendsGroup", inversedBy="members")
     * @ORM\JoinColumn(nullable=true)
     */
-    private $groups;
+    private $friendsGroups;
 
     /**
      * @var array
@@ -193,53 +167,6 @@ class Boug
         return $this->firstName;
     }
 
-    /**
-     * Set login
-     *
-     * @param string $login
-     *
-     * @return Boug
-     */
-    public function setLogin($login)
-    {
-        $this->login = $login;
-
-        return $this;
-    }
-
-    /**
-     * Get login
-     *
-     * @return string
-     */
-    public function getLogin()
-    {
-        return $this->login;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return Boug
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
 
     /**
      * Set dateRegistration
@@ -289,94 +216,39 @@ class Boug
         return $this->dateBirth;
     }
 
+
     /**
-     * Set isAdmin
+     * Add storiesAccess
      *
-     * @param boolean $isAdmin
+     * @param \CoreBundle\Entity\BougStoryReadAccess $storiesAccess
      *
      * @return Boug
      */
-    public function setIsAdmin($isAdmin)
+    public function addStoriesAccess(\CoreBundle\Entity\BougStoryReadAccess $storiesAccess)
     {
-        $this->isAdmin = $isAdmin;
+        $this->storiesAccess[] = $storiesAccess;
 
         return $this;
     }
 
     /**
-     * Get isAdmin
+     * Remove storiesAccess
      *
-     * @return bool
+     * @param \CoreBundle\Entity\BougStoryReadAccess $storiesAccess
      */
-    public function getIsAdmin()
+    public function removeStoriesAccess(\CoreBundle\Entity\BougStoryReadAccess $storiesAccess)
     {
-        return $this->isAdmin;
+        $this->storiesAccess->removeElement($storiesAccess);
     }
 
     /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     *
-     * @return Boug
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return bool
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->bougStoryReadAccess = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add bougStoryReadAccess
-     *
-     * @param \CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
-     *
-     * @return Boug
-     */
-    public function addBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
-    {
-        $bougStoryReadAccess->setBoug($this);
-        $this->bougStoryReadAccess[] = $bougStoryReadAccess;
-
-        return $this;
-    }
-
-    /**
-     * Remove bougStoryReadAccess
-     *
-     * @param \CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
-     */
-    public function removeBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
-    {
-        $this->bougStoryReadAccess->removeElement($bougStoryReadAccess);
-    }
-
-    /**
-     * Get bougStoryReadAccess
+     * Get storiesAccess
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getBougStoryReadAccess()
+    public function getStoriesAccess()
     {
-        return $this->bougStoryReadAccess;
+        return $this->storiesAccess;
     }
 
     /**
@@ -388,7 +260,6 @@ class Boug
      */
     public function addBougStoryIsCharacter(\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
     {
-        $bougStoryIsCharacter->setBoug($this);
         $this->bougStoryIsCharacter[] = $bougStoryIsCharacter;
 
         return $this;
@@ -423,7 +294,6 @@ class Boug
      */
     public function addStory(\CoreBundle\Entity\Story $story)
     {
-        $story->setOwner($this);
         $this->stories[] = $story;
 
         return $this;
@@ -436,7 +306,6 @@ class Boug
      */
     public function removeStory(\CoreBundle\Entity\Story $story)
     {
-        $story->setOwner(null);
         $this->stories->removeElement($story);
     }
 
@@ -459,7 +328,6 @@ class Boug
      */
     public function addFriendsAdderOf(\CoreBundle\Entity\Friends $friendsAdderOf)
     {
-        $friendsAdderOf->setBoug1($this);
         $this->friendsAdderOf[] = $friendsAdderOf;
 
         return $this;
@@ -472,7 +340,6 @@ class Boug
      */
     public function removeFriendsAdderOf(\CoreBundle\Entity\Friends $friendsAdderOf)
     {
-        $friendsAdderOf->setBoug1(null);
         $this->friendsAdderOf->removeElement($friendsAdderOf);
     }
 
@@ -495,7 +362,6 @@ class Boug
      */
     public function addFriendsAddedBy(\CoreBundle\Entity\Friends $friendsAddedBy)
     {
-        $friendsAddedBy->setBoug2($this);
         $this->friendsAddedBy[] = $friendsAddedBy;
 
         return $this;
@@ -508,7 +374,6 @@ class Boug
      */
     public function removeFriendsAddedBy(\CoreBundle\Entity\Friends $friendsAddedBy)
     {
-        $friendsAddedBy->setBoug2(null);
         $this->friendsAddedBy->removeElement($friendsAddedBy);
     }
 
@@ -523,37 +388,37 @@ class Boug
     }
 
     /**
-     * Add group
+     * Add friendsGroup
      *
-     * @param \CoreBundle\Entity\FriendsGroup $group
+     * @param \CoreBundle\Entity\FriendsGroup $friendsGroup
      *
      * @return Boug
      */
-    public function addGroup(\CoreBundle\Entity\FriendsGroup $group)
+    public function addFriendsGroup(\CoreBundle\Entity\FriendsGroup $friendsGroup)
     {
-        $this->groups[] = $group;
+        $this->friendsGroups[] = $friendsGroup;
 
         return $this;
     }
 
     /**
-     * Remove group
+     * Remove friendsGroup
      *
-     * @param \CoreBundle\Entity\FriendsGroup $group
+     * @param \CoreBundle\Entity\FriendsGroup $friendsGroup
      */
-    public function removeGroup(\CoreBundle\Entity\FriendsGroup $group)
+    public function removeFriendsGroup(\CoreBundle\Entity\FriendsGroup $friendsGroup)
     {
-        $this->groups->removeElement($group);
+        $this->friendsGroups->removeElement($friendsGroup);
     }
 
     /**
-     * Get groups
+     * Get friendsGroups
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getGroups()
+    public function getFriendsGroups()
     {
-        return $this->groups;
+        return $this->friendsGroups;
     }
 
     /**
@@ -565,7 +430,6 @@ class Boug
      */
     public function addGroupsManaged(\CoreBundle\Entity\FriendsGroup $groupsManaged)
     {
-        $groupsManaged->setManager($this);
         $this->groupsManaged[] = $groupsManaged;
 
         return $this;
