@@ -3,12 +3,14 @@
 namespace CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Story
  *
  * @ORM\Table(name="story")
  * @ORM\Entity(repositoryClass="CoreBundle\Repository\StoryRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Story
 {
@@ -38,21 +40,22 @@ class Story
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="DateCreation", type="datetime")
      */
     private $dateCreation;
 
     /**
-     * @var \DateTime
      *
      * @ORM\Column(name="DateLastModification", type="datetime")
+     * @Gedmo\Timestampable(on="update")
      */
     private $dateLastModification;
 
     /**
      * @var BougStoryReadAccess
      *
-     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryReadAccess;
@@ -60,7 +63,7 @@ class Story
     /**
      * @var BougStoryIsCharacter
      *
-     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryIsCharacter;
@@ -68,7 +71,7 @@ class Story
     /**
      * @var Boug
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="stories")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="stories", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $owner;
@@ -76,9 +79,19 @@ class Story
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Story", inversedBy="stories")
+     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Story", inversedBy="stories", cascade={"persist"})
      */
     private $groups;
+
+    /**
+     * Update $dateLastModification flield
+     *
+     * @ORM\PrePersist
+     */
+    public function updateDateLastModification()
+    {
+        $this->setDateLastModification(new \Datetime());
+    }
 
     /**
      * Get id

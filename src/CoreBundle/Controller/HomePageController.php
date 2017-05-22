@@ -10,11 +10,20 @@ use CoreBundle\Entity\Boug;
 
 class HomePageController extends Controller
 {
-  public function indexAction(Boug $user)
+  public function indexAction()
   {
-  		return $this->render('CoreBundle:HomePage:homepage.html.twig', [
-  			 'stories' => $this->getStories($user),
-  			 ]);
+    $bougRepository = $this
+      ->getDoctrine()
+      ->getManager()
+      ->getRepository('CoreBundle:Boug');
+
+    $bougs = $bougRepository->findAll();
+
+    $boug = $bougs[0];
+
+  	return $this->render('CoreBundle:HomePage:homepage.html.twig', [
+      'boug' => $boug,
+    ]);
   }
 
 }

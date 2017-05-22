@@ -9,3 +9,7 @@ core_friendsgroup:
 core_friendsgroup_creation:
     path:     /groups/create
     defaults: { _controller: CoreBundle:FriendsGroup:creation }
+
+core_story_add:
+    path:   /story/add
+    defaults: {_controller: CoreBundle:Story:add}

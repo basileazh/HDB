@@ -2,6 +2,8 @@
 
 namespace CoreBundle\Repository;
 
+use CoreBundle\Entity\Story;
+
 /**
  * StoryRepository
  *

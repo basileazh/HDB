@@ -24,7 +24,7 @@ class BougStoryIsCharacter
     /**
      * @var Boug
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="storyAccess")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="storyAccess", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $boug;
@@ -32,7 +32,7 @@ class BougStoryIsCharacter
     /**
      * @var Story
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Story", inversedBy="bougAccess")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Story", inversedBy="bougAccess", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $story;

@@ -3,6 +3,7 @@
 namespace CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Boug
@@ -50,8 +51,9 @@ class Boug
     private $email;
 
     /**
-     * @var \DateTime
+     * @var \DateTime $dateRegistration
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="DateRegistration", type="datetime")
      */
     private $dateRegistration;
@@ -80,16 +82,16 @@ class Boug
     /**
      * @var BougStoryReadAccess
      *
-     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $storiesAccess;
 
     /**
      * @var BougStoryIsCharacter
      *
-     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
      */
     private $bougStoryIsCharacter;
 
@@ -97,7 +99,7 @@ class Boug
      * @var array
      *
      * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Story", mappedBy="owner")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $stories;
 
@@ -105,6 +107,7 @@ class Boug
     * @var array
     *
     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Friends", mappedBy="boug1")
+    * @ORM\JoinColumn(nullable=true)
     */
     private $friendsAdderOf;
 
@@ -112,6 +115,7 @@ class Boug
     * @var array
     *
     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Friends", mappedBy="boug2")
+    * @ORM\JoinColumn(nullable=true)
     */
     private $friendsAddedBy;
 
@@ -119,6 +123,7 @@ class Boug
     * @var array
     *
     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\FriendsGroup", inversedBy="members")
+    * @ORM\JoinColumn(nullable=true)
     */
     private $groups;
 
@@ -126,6 +131,7 @@ class Boug
      * @var array
      *
      * @ORM\OneToMany(targetEntity="CoreBundle\Entity\FriendsGroup", mappedBy="manager")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $groupsManaged;
 

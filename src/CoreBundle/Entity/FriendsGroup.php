@@ -3,6 +3,7 @@
 namespace CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * FriendsGroup
@@ -32,27 +33,28 @@ class FriendsGroup
      * @var \DateTime
      *
      * @ORM\Column(name="DateCreation", type="date")
+     * @Gedmo\Timestampable(on="create")
      */
     private $dateCreation;
 
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Story", mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Story", mappedBy="groups", cascade={"persist"})
      */
     private $stories;
 
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Boug", mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Boug", mappedBy="groups", cascade={"persist"})
      */
     private $members;
 
     /**
      * @var array
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="groupsManaged")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="groupsManaged", cascade={"persist"})
      */
     private $manager;
 

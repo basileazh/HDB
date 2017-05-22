@@ -1,0 +1,29 @@
+[33mcommit d3dd12b82f685a9bb124e73d9be82ad72c73f3b8[m
+Author: basileazh <basile.elazhari@gmail.com>
+Date:   Sun May 21 20:59:24 2017 +0200
+
+    Changement des droits des fichiers
+
+[33mcommit c3f84b980b8780b9ca7b5f122caed0ee89449575[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Sun May 21 19:37:22 2017 +0200
+
+    Création du FriendsGroupController
+
+[33mcommit 0e75c810d03dedc9e59559acd782ead5cff6eb2a[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Sun May 21 19:13:10 2017 +0200
+
+    correction problèmes namespace
+
+[33mcommit 681d80888cac72a01786f6266b4bd6c05898a7c4[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Sun May 21 18:45:44 2017 +0200
+
+    correction des erreurs entités
+
+[33mcommit 2ef4c6f3648d5ff7b395013ce9120f09333870e9[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Sun May 21 18:14:31 2017 +0200
+
+    layout
