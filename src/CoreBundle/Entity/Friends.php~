@@ -1,0 +1,80 @@
+<?php
+
+namespace CoreBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Friends
+ *
+ * @ORM\Table(name="friends")
+ * @ORM\Entity(repositoryClass="CoreBundle\Repository\FriendsRepository")
+ */
+class Friends
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="DateSince", type="datetime")
+     */
+    private $dateSince;
+
+    /**
+     * @var Boug
+     *
+     * @ORM\ManyToOne(targetEntity="HDB\CoreBundle\Entity\Boug", inversedBy="friendsAdderOf")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $boug1;
+
+    /**
+     * @var Boug
+     *
+     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\Boug", mappedBy="friendsAddedBy")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $boug2;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set dateSince
+     *
+     * @param \DateTime $dateSince
+     *
+     * @return Friends
+     */
+    public function setDateSince($dateSince)
+    {
+        $this->dateSince = $dateSince;
+
+        return $this;
+    }
+
+    /**
+     * Get dateSince
+     *
+     * @return \DateTime
+     */
+    public function getDateSince()
+    {
+        return $this->dateSince;
+    }
+}
