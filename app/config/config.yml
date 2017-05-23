@@ -117,5 +117,8 @@ fos_user:
     from_email:
         address: "arnoud.j.vanhuele@gmail.com"
         sender_name: "HDB_noreply"
+    registration:
+        form:
+            type: CoreBundle\Form\RegistrationType
 
 
