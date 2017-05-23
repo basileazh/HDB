@@ -55,7 +55,7 @@ class Story
     /**
      * @var BougStoryReadAccess
      *
-     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryReadAccess;
@@ -63,7 +63,7 @@ class Story
     /**
      * @var BougStoryIsCharacter
      *
-     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryIsCharacter;

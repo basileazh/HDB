@@ -1,8 +1,24 @@
 {% extends "CoreBundle::layout.html.twig" %}
 
 {% block body %}
-<p> Bonjour </p>
-<p> Voici
+	<p> Bonjour </p>
+	<p> Voici la lsite des bougs </p>
+	<ul>
+	{% for bou in bougs %}
+		<li>{{ bou.name }} {{ bou.firstName }} {{ bou.login }} </li>
+	{% endfor %}
+	</ul>
+
+	Utilisateur courant : {{ user.name }} {{ user.firstName }} {{ user.login }}
+
+	Stories de l'utilisateur courant :
+	{% for story in stories %}
+		<li><h2>{{ story.title }}</h2>
+		 <p>{{ story.content }}</p> </li>
+	{% endfor %}
+
+	{{ form_start(form) }}	
+	{{ form_widget(form) }}
+	{{ form_end(form) }}
 
 {% endblock %}
- sg

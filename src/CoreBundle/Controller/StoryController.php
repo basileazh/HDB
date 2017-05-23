@@ -13,7 +13,7 @@ use CoreBundle\Entity\BougStoryIsCharacter;
 
 class StoryController extends Controller
 {
-  public function addAction()
+  public function addAction(Story $strory, Boug $boug, )
   {
     //$boug = new Boug();
     //$boug->setName('Basile');
@@ -31,32 +31,33 @@ class StoryController extends Controller
 //echo "</pre>";
 
 
-    $bougRepository = $this
-      ->getDoctrine()
-      ->getManager()
-      ->getRepository('CoreBundle:Boug');
-
-    $boug = $bougRepository->findOneBy(['login' => 'belazhar']);
-
-    $story = new Story();
-    $story->setTitle('zzert');
-    $story->setContent("bsr");
-
-    $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $str = '';
-    $max = mb_strlen($keyspace, '8bit') - 1;
-    for ($i = 0; $i < 8; ++$i) {
-      $str .= $keyspace[random_int(0, $max)];
-    }
-
-    $str2 = '';
-    $max = mb_strlen($keyspace, '8bit') - 1;
-    for ($i = 0; $i < 8; ++$i) {
-      $str2 .= $keyspace[random_int(0, $max)];
-    }
-
-    $story->setTitle($str);
-    $story->setContent($str2);
+  //  $bougRepository = $this
+  //    ->getDoctrine()
+  //    ->getManager()
+  //    ->getRepository('CoreBundle:Boug');
+//
+//    $boug = $bougRepository->findOneBy(['login' => 'belazhar']);
+//
+//    $story = new Story();
+//    $story->setTitle('zzert');
+//    $story->setContent("bsr");
+//
+//    $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';//
+//
+//    $str = '';
+//  //  $max = mb_strlen($keyspace, '8bit') - 1;
+//    for ($i = 0; $i < 8; ++$i) {
+//      $str .= $keyspace[random_int(0, $max)];
+//    }
+//
+//    $str2 = '';
+//  //  $max = mb_strlen($keyspace, '8bit') - 1;
+//    for ($i = 0; $i < 8; ++$i) {
+//      $str2 .= $keyspace[random_int(0, $max)];
+//    }
+//
+//    $story->setTitle($str);
+  //  $story->setContent($str2);
     $story->setOwner($boug);
     $bougStoryReadAccess = new BougStoryReadAccess();
     $bougStoryReadAccess->setBoug($boug);

@@ -24,7 +24,7 @@ class BougStoryReadAccess
     /**
      * @var Boug
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="storiesAccess", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="storiesAccess", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $boug;

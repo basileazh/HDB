@@ -90,7 +90,7 @@ class Boug
     /**
      * @var BougStoryIsCharacter
      *
-     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $bougStoryIsCharacter;
