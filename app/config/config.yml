@@ -83,12 +83,6 @@ doctrine:
                 prefix: Gedmo\Tree\Entity
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
 
-stof_doctrine_extensions:
-    default_locale: %locale%
-    orm:
-        default:
-            softdeleteable: true
-            timestampable: true
 
 # Swiftmailer Configuration
 swiftmailer:

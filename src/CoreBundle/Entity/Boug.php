@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Boug
@@ -51,6 +52,7 @@ class Boug extends BaseUser
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="DateRegistration", type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     private $dateRegistration;
 
