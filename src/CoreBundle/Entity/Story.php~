@@ -3,12 +3,14 @@
 namespace CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Story
  *
  * @ORM\Table(name="story")
  * @ORM\Entity(repositoryClass="CoreBundle\Repository\StoryRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Story
 {
@@ -38,21 +40,22 @@ class Story
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="DateCreation", type="datetime")
      */
     private $dateCreation;
 
     /**
-     * @var \DateTime
      *
      * @ORM\Column(name="DateLastModification", type="datetime")
+     * @Gedmo\Timestampable(on="update")
      */
     private $dateLastModification;
 
     /**
      * @var BougStoryReadAccess
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryReadAccess;
@@ -60,7 +63,7 @@ class Story
     /**
      * @var BougStoryIsCharacter
      *
-     * @ORM\OneToMany(targetEntity="HDB\CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug")
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryIsCharacter;
@@ -68,7 +71,7 @@ class Story
     /**
      * @var Boug
      *
-     * @ORM\ManyToOne(targetEntity="HDB\CoreBundle\Entity\Boug", inversedBy="stories")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="stories", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $owner;
@@ -76,9 +79,19 @@ class Story
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="HDB\CoreBundle\Entity\Story", inversedBy="stories")
+     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Story", inversedBy="stories", cascade={"persist"})
      */
     private $groups;
+
+    /**
+     * Update $dateLastModification flield
+     *
+     * @ORM\PrePersist
+     */
+    public function updateDateLastModification()
+    {
+        $this->setDateLastModification(new \Datetime());
+    }
 
     /**
      * Get id
@@ -196,12 +209,13 @@ class Story
     /**
      * Add bougStoryReadAccess
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
+     * @param \CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
      *
      * @return Story
      */
-    public function addBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
+    public function addBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
     {
+        $bougStoryReadAccess->setStory($this);
         $this->bougStoryReadAccess[] = $bougStoryReadAccess;
 
         return $this;
@@ -210,9 +224,9 @@ class Story
     /**
      * Remove bougStoryReadAccess
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
+     * @param \CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
      */
-    public function removeBougStoryReadAccess(\HDB\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
+    public function removeBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
     {
          # $bougStoryReadAccess(null);
         $this->bougStoryReadAccess->removeElement($bougStoryReadAccess);
@@ -231,12 +245,13 @@ class Story
     /**
      * Add bougStoryIsCharacter
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
+     * @param \CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
      *
      * @return Story
      */
-    public function addBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
+    public function addBougStoryIsCharacter(\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
     {
+        $bougStoryIsCharacter->setStory($this);
         $this->bougStoryIsCharacter[] = $bougStoryIsCharacter;
 
         return $this;
@@ -245,9 +260,9 @@ class Story
     /**
      * Remove bougStoryIsCharacter
      *
-     * @param \HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
+     * @param \CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
      */
-    public function removeBougStoryIsCharacter(\HDB\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
+    public function removeBougStoryIsCharacter(\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
     {
         $this->bougStoryIsCharacter->removeElement($bougStoryIsCharacter);
     }
@@ -260,5 +275,65 @@ class Story
     public function getBougStoryIsCharacter()
     {
         return $this->bougStoryIsCharacter;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \CoreBundle\Entity\Boug $owner
+     *
+     * @return Story
+     */
+    public function setOwner(\CoreBundle\Entity\Boug $owner)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \CoreBundle\Entity\Boug
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Add group
+     *
+     * @param \CoreBundle\Entity\Story $group
+     *
+     * @return Story
+     */
+    public function addGroup(\CoreBundle\Entity\Story $group)
+    {
+        $group->addStory($this);
+        $this->groups[] = $group;
+
+        return $this;
+    }
+
+    /**
+     * Remove group
+     *
+     * @param \CoreBundle\Entity\Story $group
+     */
+    public function removeGroup(\CoreBundle\Entity\Story $group)
+    {
+        $group->removeStory($this);
+        $this->groups->removeElement($group);
+    }
+
+    /**
+     * Get groups
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
     }
 }

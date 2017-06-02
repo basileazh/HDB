@@ -13,7 +13,7 @@ use CoreBundle\Entity\BougStoryIsCharacter;
 
 class StoryController extends Controller
 {
-  public function addAction(Story $strory, Boug $boug, )
+  public function addAction(Story $strory, Boug $boug)
   {
     //$boug = new Boug();
     //$boug->setName('Basile');

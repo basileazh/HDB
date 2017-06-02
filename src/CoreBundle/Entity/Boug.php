@@ -590,4 +590,38 @@ class Boug
     {
         return $this->groupsManaged;
     }
+
+    /**
+     * Add storiesAccess
+     *
+     * @param \CoreBundle\Entity\BougStoryReadAccess $storiesAccess
+     *
+     * @return Boug
+     */
+    public function addStoriesAccess(\CoreBundle\Entity\BougStoryReadAccess $storiesAccess)
+    {
+        $this->storiesAccess[] = $storiesAccess;
+
+        return $this;
+    }
+
+    /**
+     * Remove storiesAccess
+     *
+     * @param \CoreBundle\Entity\BougStoryReadAccess $storiesAccess
+     */
+    public function removeStoriesAccess(\CoreBundle\Entity\BougStoryReadAccess $storiesAccess)
+    {
+        $this->storiesAccess->removeElement($storiesAccess);
+    }
+
+    /**
+     * Get storiesAccess
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStoriesAccess()
+    {
+        return $this->storiesAccess;
+    }
 }

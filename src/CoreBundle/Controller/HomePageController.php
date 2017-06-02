@@ -54,6 +54,7 @@ class HomePageController extends Controller
 
     $storyForm->handleRequest($request);
 
+
     // Récupération des Stories de l'User en cours
     $storyRepository = $this
       ->getDoctrine()
@@ -68,14 +69,24 @@ class HomePageController extends Controller
         
         $story = $storyForm->getData();
 
+        $bougstoryreadaccess = new BougStoryReadAccess();
+        $bougstoryreadaccess->setBoug($story->getBougStoryReadAccess());
+        $bougstoryreadaccess->setStory($story);
+        $story->removeBougStoryReadAccess($boug);
+        $story->addBougStoryReadAccess($bougstoryreadaccess);
+
+        $bougStoryIsCharacter = new BougStoryIsCharacter();
+        $bougStoryIsCharacter->setBoug($story->getBougStoryIsCharacter());
+        $bougStoryIsCharacter->setStory($story);
+        $story->removeBougStoryIsCharacter($boug);
+        $story->addBougStoryIsCharacter($bougStoryIsCharacter);
+
         $em = $this->getDoctrine()->getManager();
         $story->setOwner($boug);
         $em->persist($story);
         $em->flush();
 
     }
-
-    
   	
     return $this->render('CoreBundle:HomePage:homepage.html.twig', [
       'bougs' => $bougs,
