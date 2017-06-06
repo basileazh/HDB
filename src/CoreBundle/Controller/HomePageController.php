@@ -6,16 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Form as Form;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 
 use CoreBundle\Entity\Boug;
 use CoreBundle\Entity\Story;
-//use CoreBundle\Entity\BougStoryReadAccess;
-//use CoreBundle\Entity\BougStoryIsCharacter;
+use CoreBundle\Entity\BougStoryReadAccess;
+use CoreBundle\Entity\BougStoryIsCharacter;
 
 
 class HomePageController extends Controller
@@ -41,13 +43,13 @@ class HomePageController extends Controller
                 ->add('Content', TextareaType::class)
                 ->add('bougstoryreadaccess', EntityType::class, array(
                     'class'        => 'CoreBundle:Boug',
-                    'choice_label' => 'login',
+                    'choice_label' => 'username',
                     'multiple'     => true,
                     'expanded'     => true,
                   ))
                 ->add('bougStoryIsCharacter', EntityType::class, array(
                     'class'        => 'CoreBundle:Boug',
-                    'choice_label' => 'login',
+                    'choice_label' => 'username',
                     'multiple'     => true,
                     'expanded'     => true,
 

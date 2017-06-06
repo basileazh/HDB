@@ -5,11 +5,11 @@
 	<p> Voici la lsite des bougs </p>
 	<ul>
 	{% for bou in bougs %}
-		<li>{{ bou.name }} {{ bou.firstName }} {{ bou.login }} </li>
+		<li>{{ bou.name }} {{ bou.firstName }} {{ bou.username }} </li>
 	{% endfor %}
 	</ul>	
 
-	Utilisateur courant : {{ user.name }} {{ user.firstName }} {{ user.login }}
+	Utilisateur courant : {{ user.name }} {{ user.firstName }} {{ user.username }}
 
 	Stories de l'utilisateur courant :
 	{% for story in stories %}
