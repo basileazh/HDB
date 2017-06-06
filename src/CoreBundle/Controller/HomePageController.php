@@ -37,17 +37,20 @@ class HomePageController extends Controller
     //$story->setBougStoryRead()
 
     $storyForm = $this->createFormBuilder($story)
-                ->add('title', TextType::class)
-                ->add('content', TextareaType::class)
+                ->add('Title', TextType::class)
+                ->add('Content', TextareaType::class)
                 ->add('bougstoryreadaccess', EntityType::class, array(
                     'class'        => 'CoreBundle:Boug',
                     'choice_label' => 'login',
                     'multiple'     => true,
+                    'expanded'     => true,
                   ))
                 ->add('bougStoryIsCharacter', EntityType::class, array(
                     'class'        => 'CoreBundle:Boug',
                     'choice_label' => 'login',
                     'multiple'     => true,
+                    'expanded'     => true,
+
                   ))                
                 ->add('save', SubmitType::class, array('label' => '   Create Story'))
                 ->getForm();

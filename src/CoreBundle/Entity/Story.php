@@ -4,6 +4,8 @@ namespace CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Story
@@ -26,12 +28,19 @@ class Story
     /**
      * @var string
      *
+     * @Assert\NotBlank() 
+     * @Assert\Type("string",message="The value {{ value }} is not a valid {{ type }}.") 
+     *
      * @ORM\Column(name="Title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank() 
+     * @Assert\Type("string",message="The value {{ value }} is not a valid {{ type }}.") 
+     *
      *
      * @ORM\Column(name="Content", type="text")
      */

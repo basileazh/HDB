@@ -1,0 +1,120 @@
+[33mcommit 30541aaf1bd1e674c03b6e60d7596e7ea8cf5a8f[m
+Author: basileazh <basile.elazhari@gmail.com>
+Date:   Fri Jun 2 14:22:40 2017 +0200
+
+    Ajout de story et affichage des stories de l'utilisateur
+
+[33mcommit 43a308ddffe97a1f94441534aaf97a2b1b299723[m
+Author: basileazh <basile.elazhari@gmail.com>
+Date:   Tue May 23 23:48:44 2017 +0200
+
+    ajout de story et affichage des stroies de l'utilisateur courant
+
+[33mcommit e36fe177e845f427af360434c6c8807272b6efe9[m
+Author: basileazh <basile.elazhari@gmail.com>
+Date:   Tue May 23 00:05:18 2017 +0200
+
+    Ajout du StoryController
+
+[33mcommit d3dd12b82f685a9bb124e73d9be82ad72c73f3b8[m
+Author: basileazh <basile.elazhari@gmail.com>
+Date:   Sun May 21 20:59:24 2017 +0200
+
+    Changement des droits des fichiers
+
+[33mcommit c3f84b980b8780b9ca7b5f122caed0ee89449575[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Sun May 21 19:37:22 2017 +0200
+
+    Création du FriendsGroupController
+
+[33mcommit 0e75c810d03dedc9e59559acd782ead5cff6eb2a[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Sun May 21 19:13:10 2017 +0200
+
+    correction problèmes namespace
+
+[33mcommit 681d80888cac72a01786f6266b4bd6c05898a7c4[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Sun May 21 18:45:44 2017 +0200
+
+    correction des erreurs entités
+
+[33mcommit 2ef4c6f3648d5ff7b395013ce9120f09333870e9[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Sun May 21 18:14:31 2017 +0200
+
+    layout
+
+[33mcommit d85a654296a0c90b1df477b949a01ee15bdaacad[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Sun May 21 17:42:55 2017 +0200
+
+    friendsgroup controller
+
+[33mcommit 4255ebe63c55d0372a31fa3a671d58c94cda0ddc[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Sun May 21 17:31:04 2017 +0200
+
+    home page controller
+
+[33mcommit bfecd16103a52572a9fd86ef51f50a8a632a5123[m
+Merge: faecde7 f1926dd
+Author: basileazh <basile.elazhari@gmail.com>
+Date:   Wed May 17 15:26:28 2017 +0200
+
+    Ajout des entités et relations
+
+[33mcommit faecde79ec003f003162a565066b14b87822540b[m
+Author: basileazh <basile.elazhari@gmail.com>
+Date:   Wed May 17 15:25:24 2017 +0200
+
+    Delete first
+
+[33mcommit f1926dda44a4c127c5db42cce2eed1b70c6646da[m
+Author: basileazh <basile.elazhari@gmail.com>
+Date:   Wed May 17 15:15:40 2017 +0200
+
+    Ajout de relations entre Boug, Story et FriendsGroup
+
+[33mcommit a090a72c456bab04108b06454849face4bece563[m
+Author: basileazh <basile.elazhari@gmail.com>
+Date:   Wed May 17 13:19:12 2017 +0200
+
+    Ajout du controleur et des premières entités
+
+[33mcommit cb65aa5c242a36be9f984306cab55ab2f05c63a2[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Wed Mar 22 16:33:30 2017 +0100
+
+    création CoreBundle
+
+[33mcommit e68d12a6a4fad06afd1574c0029acca46ace6965[m
+Author: Basile El Azhari <basile.elazhari@gmail.com>
+Date:   Wed Mar 22 16:30:17 2017 +0100
+
+    Suppression du premier CoreBundle
+
+[33mcommit f99409287656864c6d552af1bad448a7484c98a4[m
+Author: Basile El Azhari <basile.elazhari@gmail.com>
+Date:   Wed Mar 22 16:21:49 2017 +0100
+
+    Ajout du CoreBundle
+
+[33mcommit 78c6a0a08929a5429ce8b5cda6ad3efa368dc43a[m
+Author: Basile El Azhari <basile.elazhari@gmail.com>
+Date:   Wed Mar 22 16:21:04 2017 +0100
+
+    Changement des droits à 777
+
+[33mcommit 70f81c5080993477dc7fa9f8a9c5075b17333d7b[m
+Author: Arnoud Vanhuele <Arnoud Vanhuele>
+Date:   Wed Mar 22 15:56:49 2017 +0100
+
+    Initial commit
+
+[33mcommit 4118a6e5393b5c9d87eb7bc01153e72085e1cd03[m
+Author: Basile El Azhari <basile.elazhari@gmail.com>
+Date:   Wed Mar 22 15:29:21 2017 +0100
+
+    Initial commit
