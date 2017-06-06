@@ -34,6 +34,7 @@ framework:
     assets: ~
     php_errors:
         log: true
+    translator: ~
 
 # Twig Configuration
 twig:
@@ -92,8 +93,8 @@ stof_doctrine_extensions:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
+    transport: "smtp"
+    host:      "localhost"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
@@ -107,3 +108,11 @@ stof_doctrine_extensions:
             timestampable: false # not needed: listeners are not enabled by default
         other:
             timestampable: true
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: CoreBundle\Entity\Boug
+    from_email:
+        address: you@example.com
+        sender_name: You
