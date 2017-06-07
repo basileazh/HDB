@@ -45,6 +45,14 @@ class Friends
     private $boug2;
 
     /**
+     * @var \Bool
+     *
+     * @ORM\Column(name="waitingForAnswer", type="boolean")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $waitingForAnswer;
+
+    /**
      * Get id
      *
      * @return int
@@ -141,5 +149,31 @@ class Friends
     public function getBoug2()
     {
         return $this->boug2;
+    }
+
+
+
+    /**
+     * Set waitingForAnswer
+     *
+     * @param boolean $waitingForAnswer
+     *
+     * @return Friends
+     */
+    public function setWaitingForAnswer($waitingForAnswer)
+    {
+        $this->waitingForAnswer = $waitingForAnswer;
+
+        return $this;
+    }
+
+    /**
+     * Get waitingForAnswer
+     *
+     * @return boolean
+     */
+    public function getWaitingForAnswer()
+    {
+        return $this->waitingForAnswer;
     }
 }

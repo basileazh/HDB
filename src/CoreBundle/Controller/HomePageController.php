@@ -22,6 +22,7 @@ use CoreBundle\Entity\BougStoryIsCharacter;
 
 class HomePageController extends Controller
 {
+
   public function indexAction(Request $request)
   {
     $user = $this->get('security.token_storage')->getToken()->getUser();
@@ -71,6 +72,8 @@ class HomePageController extends Controller
         [ 'owner' => $boug ]
       );
 
+    // $mrtest = $this->getDoctrine()->getManager()->getRepository('CoreBundle:Boug')->getBougsByPaternSearched('a');
+        
      if ($storyForm->isSubmitted() && $storyForm->isValid()) {
         
         $story = $storyForm->getData();

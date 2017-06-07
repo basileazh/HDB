@@ -45,6 +45,14 @@ class Friends
     private $boug2;
 
     /**
+     * @var \Bool
+     *
+     * @ORM\Column(name="waitingForAnswer", type="boolean")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $waitingForAnswer;
+
+    /**
      * Get id
      *
      * @return int
@@ -142,4 +150,6 @@ class Friends
     {
         return $this->boug2;
     }
+
+
 }

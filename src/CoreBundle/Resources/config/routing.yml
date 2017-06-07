@@ -13,3 +13,7 @@ core_friendsgroup_creation:
 core_story_add:
     path:   /story/add
     defaults: {_controller: CoreBundle:Story:add}
+
+friends_get_boug_list:
+    path:   /friends/get-boug-list
+    defaults: {_controller: CoreBundle:Friends:getBougList}
