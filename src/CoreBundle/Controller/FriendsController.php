@@ -31,6 +31,29 @@ class FriendsController extends Controller
         return new Response("Error : this is not an Ajax request", 400);
     }
 
+    public function addFriendAction(Request $request)
+    {
+        if($request->isXMLHttpRequest())
+        {
+            $em = $this->getDoctrine()->getManager();
+
+
+            $idBoug2 = $request->get('idBoug');
+            $boug1 = $this->get('security.token_storage')->getToken()->getUser();
+            $boug2 = $em->getRepository('CoreBundle:Boug')->find($idBoug2);
+
+            $newFriendship = new Friends();
+            $newFriendship->setBoug1($boug1)
+                          ->setBoug2($boug2);
+
+            $em->persist($newFriendship);
+            $em->flush();
+                          
+            return new JsonResponse([]);
+        }
+        return new Response("Error : this is not an Ajax request", 400);
+    }
+
     public function prepareBougJSON($bougs)
     {
         $json = '{"bougs" : [';

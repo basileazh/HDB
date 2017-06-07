@@ -17,3 +17,7 @@ core_story_add:
 friends_get_boug_list:
     path:   /friends/get-boug-list
     defaults: {_controller: CoreBundle:Friends:getBougList}
+
+friends_add_friend:
+    path:   /friends/add-friend
+    defaults: {_controller: CoreBundle:Friends:addFriend}

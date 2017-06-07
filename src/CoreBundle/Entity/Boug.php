@@ -357,39 +357,7 @@ class Boug extends BaseUser
         return $this->friendsAdderOf;
     }
 
-    /**
-     * Add friendsAddedBy
-     *
-     * @param \CoreBundle\Entity\Friends $friendsAddedBy
-     *
-     * @return Boug
-     */
-    public function addFriendsAddedBy(\CoreBundle\Entity\Friends $friendsAddedBy)
-    {
-        $this->friendsAddedBy[] = $friendsAddedBy;
-
-        return $this;
-    }
-
-    /**
-     * Remove friendsAddedBy
-     *
-     * @param \CoreBundle\Entity\Friends $friendsAddedBy
-     */
-    public function removeFriendsAddedBy(\CoreBundle\Entity\Friends $friendsAddedBy)
-    {
-        $this->friendsAddedBy->removeElement($friendsAddedBy);
-    }
-
-    /**
-     * Get friendsAddedBy
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFriendsAddedBy()
-    {
-        return $this->friendsAddedBy;
-    }
+    
 
     /**
      * Add friendsGroup
@@ -457,5 +425,39 @@ class Boug extends BaseUser
     public function getGroupsManaged()
     {
         return $this->groupsManaged;
+    }
+
+    /**
+     * Add friendsAddedBy
+     *
+     * @param \CoreBundle\Entity\Friends $friendsAddedBy
+     *
+     * @return Boug
+     */
+    public function addFriendsAddedBy(\CoreBundle\Entity\Friends $friendsAddedBy)
+    {
+        $this->friendsAddedBy[] = $friendsAddedBy;
+
+        return $this;
+    }
+
+    /**
+     * Remove friendsAddedBy
+     *
+     * @param \CoreBundle\Entity\Friends $friendsAddedBy
+     */
+    public function removeFriendsAddedBy(\CoreBundle\Entity\Friends $friendsAddedBy)
+    {
+        $this->friendsAddedBy->removeElement($friendsAddedBy);
+    }
+
+    /**
+     * Get friendsAddedBy
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFriendsAddedBy()
+    {
+        return $this->friendsAddedBy;
     }
 }

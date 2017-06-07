@@ -27,15 +27,15 @@
 {% block rightcol %}
 <div id="add-friends-zone" class="row">
 	<input id="friends-search-input" type="text" class="form-control" placeholder="Rechercher des amis">
+	<div id="friends-to-be-added"></div>
 </div>
-<button>BSR</button>
 {% endblock %}
 
 
 {% block javascripts %}
 {{ parent() }}
 <script>
-
+	//Fonction pour aller chercher des bougs en BDD à partir d'un motif
 	function searchFriendsAjax(nameSearched)
 	{
 		$.ajax({
@@ -48,19 +48,36 @@
 			bougs = JSON.parse(data['bougs']);
 			bougs["bougs"].forEach(function(item)
 			{
-				console.log(item);
-				$('#add-friends-zone').append("<h3>"+item["username"]+"</h3>");
+				$('#friends-to-be-added').append("<div class='bougToBeAdded' idBoug="+item["id"]+">"+item["username"]+"<button class='addFriend' idBoug="+item["id"]+">Ajouter</button></div>");
 			})
-			
-				
-			
 		});
 	}
 
     $(document).ready(function() {
 
-    	$('#add-friends-zone').on('keyup', 'input', function(){
-    		searchFriendsAjax($(this).val());
+    	//On va chercher les bougs en BDD lorsque l'utilisateur effectue une recherche
+    	$('#add-friends-zone').on('keyup', 'input', function(e){
+    		if(e.which != 8)
+    		{
+    			$('#friends-to-be-added').empty();	
+    			searchFriendsAjax($(this).val());
+    		}
+    	})
+    	.on('click', 'button.addFriend', function()
+    	{
+    		idBoug = $(this).attr('idBoug');
+    		$.ajax({
+				url: "{{path('friends_add_friend')}}",
+				method:"post",
+				data: {idBoug : idBoug}
+			})
+			.done(function(data)
+			{
+				divBoug = $('div.bougToBeAdded[idBoug="'+idBoug+'"]')
+				divBoug.append('Demande effectuée <span class="glyphicon glyphicon-ok"></span>');
+				divBoug.find('button.addFriend').remove();
+				console.log(divBoug);
+			});
     	});
     });
 

@@ -3,6 +3,7 @@
 namespace CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Friends
@@ -24,9 +25,16 @@ class Friends
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="DateSince", type="datetime")
+     * @ORM\Column(name="DateSinceAgreement", type="datetime", nullable=true)
      */
-    private $dateSince;
+    private $dateSinceAgreement = null;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="DateSinceDemand", type="datetime")
+     */
+    private $dateSinceDemand;
 
     /**
      * @var Boug
@@ -39,7 +47,7 @@ class Friends
     /**
      * @var Boug
      *
-     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\Boug", mappedBy="friendsAddedBy")
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="friendsAddedBy")
      * @ORM\JoinColumn(nullable=false)
      */
     private $boug2;
@@ -51,46 +59,76 @@ class Friends
      * @ORM\JoinColumn(nullable=false)
      */
     private $waitingForAnswer;
+   
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->waitingForAnswer = true;
+        $this->dateSinceDemand = new \Datetime();
+        $this->dateSinceAgreement = null;
+        $this->boug2 = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
 
+    
+
     /**
-     * Set dateSince
+     * Set dateSinceDemand
      *
-     * @param \DateTime $dateSince
+     * @param \DateTime $dateSinceDemand
      *
      * @return Friends
      */
-    public function setDateSince($dateSince)
+    public function setDateSinceDemand($dateSinceDemand)
     {
-        $this->dateSince = $dateSince;
+        $this->dateSinceDemand = $dateSinceDemand;
 
         return $this;
     }
 
     /**
-     * Get dateSince
+     * Get dateSinceDemand
      *
      * @return \DateTime
      */
-    public function getDateSince()
+    public function getDateSinceDemand()
     {
-        return $this->dateSince;
+        return $this->dateSinceDemand;
     }
+
     /**
-     * Constructor
+     * Set waitingForAnswer
+     *
+     * @param boolean $waitingForAnswer
+     *
+     * @return Friends
      */
-    public function __construct()
+    public function setWaitingForAnswer($waitingForAnswer)
     {
-        $this->boug2 = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->waitingForAnswer = $waitingForAnswer;
+
+        return $this;
+    }
+
+    /**
+     * Get waitingForAnswer
+     *
+     * @return boolean
+     */
+    public function getWaitingForAnswer()
+    {
+        return $this->waitingForAnswer;
     }
 
     /**
@@ -118,38 +156,26 @@ class Friends
     }
 
     /**
-     * Add boug2
+     * Set boug2
      *
      * @param \CoreBundle\Entity\Boug $boug2
      *
      * @return Friends
      */
-    public function addBoug2(\CoreBundle\Entity\Boug $boug2)
+    public function setBoug2(\CoreBundle\Entity\Boug $boug2)
     {
-        $this->boug2[] = $boug2;
+        $this->boug2 = $boug2;
 
         return $this;
     }
 
     /**
-     * Remove boug2
-     *
-     * @param \CoreBundle\Entity\Boug $boug2
-     */
-    public function removeBoug2(\CoreBundle\Entity\Boug $boug2)
-    {
-        $this->boug2->removeElement($boug2);
-    }
-
-    /**
      * Get boug2
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \CoreBundle\Entity\Boug
      */
     public function getBoug2()
     {
         return $this->boug2;
     }
-
-
 }
