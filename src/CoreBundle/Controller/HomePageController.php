@@ -24,6 +24,7 @@ class HomePageController extends Controller
 {
   public function indexAction(Request $request)
   {
+    $user = $this->get('security.token_storage')->getToken()->getUser();
     // Simulation de Boug user, debug
     $bougRepository = $this
       ->getDoctrine()
