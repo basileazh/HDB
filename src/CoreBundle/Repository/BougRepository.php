@@ -10,4 +10,14 @@ namespace CoreBundle\Repository;
  */
 class BougRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getBougsByPaternSearched($nameSearched)
+    {
+        return $this
+            ->createQueryBuilder('b')
+            ->where('b.username LIKE :nameSearched')
+            // ->where('b.name LIKE :nameSearched OR b.firstName LIKE :nameSearched OR b.username LIKE :nameSearched')
+            ->setParameter('nameSearched', '%'.$nameSearched.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,6 +1,7 @@
 {% extends "CoreBundle::layout.html.twig" %}
 
 {% block body %}
+	{{ parent() }}
 	<p> Bonjour </p>
 	<p> Voici la lsite des bougs </p>
 	<ul>
@@ -20,5 +21,49 @@
 	{{ form_start(form) }}	
 	{{ form_widget(form) }}
 	{{ form_end(form) }}
+
+{% endblock %}
+
+{% block rightcol %}
+<div id="add-friends-zone" class="row">
+	<input id="friends-search-input" type="text" class="form-control" placeholder="Rechercher des amis">
+</div>
+<button>BSR</button>
+{% endblock %}
+
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+
+	function searchFriendsAjax(nameSearched)
+	{
+		$.ajax({
+			url: "{{path('friends_get_boug_list')}}",
+			method:"post",
+			data: {nameSearched : nameSearched}
+		})
+		.done(function(data)
+		{
+			bougs = JSON.parse(data['bougs']);
+			bougs["bougs"].forEach(function(item)
+			{
+				console.log(item);
+				$('#add-friends-zone').append("<h3>"+item["username"]+"</h3>");
+			})
+			
+				
+			
+		});
+	}
+
+    $(document).ready(function() {
+
+    	$('#add-friends-zone').on('keyup', 'input', function(){
+    		searchFriendsAjax($(this).val());
+    	});
+    });
+
+</script>
 
 {% endblock %}
