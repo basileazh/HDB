@@ -2,31 +2,63 @@
 
 {% block body %}
 	{{ parent() }}
-	<p> Bonjour </p>
-	<p> Voici la lsite des bougs </p>
-	<ul>
-	{% for bou in bougs %}
-		<li>{{ bou.name }} {{ bou.firstName }} {{ bou.username }} </li>
-	{% endfor %}
-	</ul>	
+	Utilisateur courant : {{ user.name }} {{ user.firstName }}. Login : {{ user.username }}
+	<br>
 
-	Utilisateur courant : {{ user.name }} {{ user.firstName }} {{ user.username }}
+	{# 	Formulaire d'ajout de story #}
+	<h2> Ajouter une Story </h2>
 
-	Stories de l'utilisateur courant :
+	{{ form_start(storyForm) }}
+	{{ form_errors(storyForm) }}
+	{{ form_row(storyForm.title) }}
+	{{ form_row(storyForm.content) }}
+
+	{{ form_label(storyForm.bougReadAccess) }}
+	 <ul id="bougReadAccess-fields-list"
+        data-prototype="{{ form_widget(storyForm.bougReadAccess.vars.prototype)|e }}">
+    {% for bougReadAccessField in storyForm.bougReadAccess %}
+        <li>
+            
+        </li>
+    {% endfor %}
+    </ul>
+	{{ form_widget(storyForm.bougReadAccess) }}
+
+     <a href="#" id="add-another-bougReadAccess">Add Boug en accès lecture</a>
+     {# <a href="#" id="delete-another-bougReadAccess">Delete Boug</a> #}
+     <br>
+
+ 	{{ form_label(storyForm.bougIsCharacter) }}
+  
+
+     <ul id="bougIsCharacter-fields-list"
+        data-prototype="{{ form_widget(storyForm.bougIsCharacter.vars.prototype)|e }}">
+    {% for bougIsCharacterField in storyForm.bougIsCharacter %}
+        <li>
+            {{ form_row(storyForm.bougIsCharacter.vars.prototype) }}
+
+        </li>
+    {% endfor %}
+    </ul>
+  {{ form_widget(storyForm.bougIsCharacter) }}
+     <a href="#" id="add-another-bougIsCharacter">Add Boug Is Character</a>
+
+	{{ form_end(storyForm) }}
+
+	{# Affichages des stories #}
+	<h2> Stories de l'utilisateur courant : </h2>
 	{% for story in stories %}
-		<li><h2>{{ story.title }}</h2>
-		 <p>{{ story.content }}</p> </li>
+		<h3>{{ story.title }}</h3>
+		 <p>{{ story.content }}</p> 
 	{% endfor %}
 
-	{{ form_start(form) }}	
-	{{ form_widget(form) }}
-	{{ form_end(form) }}
+	
 
 {% endblock %}
 
 {% block rightcol %}
 <div id="add-friends-zone" class="row">
-	<input id="friends-search-input" type="text" class="form-control" placeholder="Rechercher des amis">
+	<input id="friends-search-input" type="text" class="storyForm-control" placeholder="Rechercher des amis">
 </div>
 <button>BSR</button>
 {% endblock %}
@@ -63,6 +95,73 @@
     		searchFriendsAjax($(this).val());
     	});
     });
+
+</script>
+
+<script type="text/javascript">
+    // keep track of how many bougReadAccess fields have been rendered
+    var bougReadAccessCount = '{{ storyForm.bougReadAccess|length }}';
+
+    jQuery(document).ready(function() {
+        jQuery('#add-another-bougReadAccess').click(function(e) {
+            e.preventDefault();
+
+            var bougReadAccessList = jQuery('#bougReadAccess-fields-list');
+
+            // grab the prototype template
+            var newWidget = bougReadAccessList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your bougReadAccess
+            // end name attribute looks like name="contact[bougReadAccess][2]"
+            newWidget = newWidget.replace(/__name__/g, bougReadAccessCount);
+            bougReadAccessCount++;
+
+            // create a new list element and add it to the list
+            var newLi = jQuery('<li></li>').html(newWidget);
+            newLi.appendTo(bougReadAccessList);
+        });  
+
+    });
+
+    var bougIsCharacterCount = '{{ storyForm.bougIsCharacter|length }}';
+
+    jQuery(document).ready(function() {
+        jQuery('#add-another-bougIsCharacter').click(function(e) {
+            e.preventDefault();
+
+            var bougIsCharacterList = jQuery('#bougIsCharacter-fields-list');
+
+            // grab the prototype template
+            var newWidget = bougIsCharacterList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your bougIsCharacter
+            // end name attribute looks like name="contact[bougIsCharacter][2]"
+            newWidget = newWidget.replace(/__name__/g, bougIsCharacterCount);
+            bougIsCharacterCount++;
+
+            // create a new list element and add it to the list
+            var newLi = jQuery('<li></li>').html(newWidget);
+            newLi.appendTo(bougIsCharacterList);
+        });
+    }); 
+
+        // jQuery('#delete-another-bougReadAccess').click(function(e) {
+        //     e.preventDefault();
+
+        //     var bougReadAccessList = jQuery('#bougReadAccess-fields-list');
+
+        //     // grab the prototype template
+        //     var newWidget = bougReadAccessList.attr('data-prototype');
+        //     // replace the "__name__" used in the id and name of the prototype
+        //     // with a number that's unique to your bougReadAccess
+        //     // end name attribute looks like name="contact[bougReadAccess][2]"
+        //     newWidget = newWidget.replace(/__name__/g, bougReadAccessCount);
+        //     bougReadAccessCount++;
+
+        //     // create a new list element and add it to the list
+        //     var newLi = jQuery('<li></li>').html(newWidget);
+        //     newLi.appendTo(bougReadAccessList);
+        // });
 
 </script>
 

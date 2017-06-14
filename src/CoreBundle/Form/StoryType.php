@@ -22,17 +22,17 @@ class StoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
          $builder
-            ->add('Title',      TextType::class, ['label' => 'Titre'])
-            ->add('Content',    TextareaType::class, ['label' => 'Contenu'])
-            ->add('bougstoryreadaccess', CollectionType::class, [
+            ->add('title',      TextType::class, ['label' => 'Titre'])
+            ->add('content',    TextareaType::class, ['label' => 'Contenu'])
+            ->add('bougStoryReadAccess', CollectionType::class, [
                     'entry_type' => BougStoryReadAccessType::class, 
                     'entry_options' => [
-                        'label' => 'Accès en lecture',
                         'data_class' => null,
-                        'allow_add' => true,
-                        'allow_delete' => true,
-                        'prototype' => true,
-                    ]
+                    ],
+                    'allow_add' => true,
+                    'prototype' => true,
+                    'allow_delete' => true,
+                    'label' => 'Accès en lecture',
                 ])
             ->add('save', SubmitType::class, ['label' => 'Create Story']);
     }
