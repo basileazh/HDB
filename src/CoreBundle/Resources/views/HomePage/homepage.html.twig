@@ -26,6 +26,7 @@
 
 {% block rightcol %}
 <div id="add-friends-zone" class="row">
+	<h3>Ajouter des amis</h3>
 	<input id="friends-search-input" type="text" class="form-control" placeholder="Rechercher des amis">
 	<div id="friends-to-be-added"></div>
 </div>
@@ -45,11 +46,21 @@
 		})
 		.done(function(data)
 		{
-			bougs = JSON.parse(data['bougs']);
-			bougs["bougs"].forEach(function(item)
+			nonFriendBougs = JSON.parse(data['nonFriendBougs']);
+			friendsRequestedByBoug = JSON.parse(data['friendsRequestedByBoug']);
+			bougsRequestingUser = JSON.parse(data['bougsRequestingUser']);
+			bougsRequestingUser.forEach(function(item)
 			{
-				$('#friends-to-be-added').append("<div class='bougToBeAdded' idBoug="+item["id"]+">"+item["username"]+"<button class='addFriend' idBoug="+item["id"]+">Ajouter</button></div>");
-			})
+				$('#friends-to-be-added').append("<div class='boug-requesting-user' id-boug="+item["id"]+">"+item["username"]+" <button class='accept-friend-request' id-boug="+item["id"]+">Accepter la demande</button></div>");
+			});
+			friendsRequestedByBoug.forEach(function(item)
+			{
+				$('#friends-to-be-added').append("<div class='friend-requested-byrboug' id-boug="+item["id"]+">"+item["username"]+" Demande envoyée</div>");
+			});
+			nonFriendBougs.forEach(function(item)
+			{
+				$('#friends-to-be-added').append("<div class='boug-to-be-added' id-boug="+item["id"]+">"+item["username"]+" <button class='send-friend-request' id-boug="+item["id"]+">Ajouter</button></div>");
+			});
 		});
 	}
 
@@ -63,9 +74,9 @@
     			searchFriendsAjax($(this).val());
     		}
     	})
-    	.on('click', 'button.addFriend', function()
+    	.on('click', 'button.send-friend-request', function()
     	{
-    		idBoug = $(this).attr('idBoug');
+    		idBoug = $(this).attr('id-boug');
     		$.ajax({
 				url: "{{path('friends_add_friend')}}",
 				method:"post",
@@ -73,11 +84,14 @@
 			})
 			.done(function(data)
 			{
-				divBoug = $('div.bougToBeAdded[idBoug="'+idBoug+'"]')
+				divBoug = $('div.boug-to-be-added[id-boug="'+idBoug+'"]')
 				divBoug.append('Demande effectuée <span class="glyphicon glyphicon-ok"></span>');
-				divBoug.find('button.addFriend').remove();
-				console.log(divBoug);
+				divBoug.find('button.send-friend-request').remove();
 			});
+    	})
+    	.on('click', 'button.accept-friend-request', function()
+    	{
+    		acceptFriendRequestAjax($(this).attr('id-boug'));
     	});
     });
 

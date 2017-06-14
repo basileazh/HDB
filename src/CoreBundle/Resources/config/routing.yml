@@ -21,3 +21,11 @@ friends_get_boug_list:
 friends_add_friend:
     path:   /friends/add-friend
     defaults: {_controller: CoreBundle:Friends:addFriend}
+
+friends_friend_requests:
+    path:   /friends/friend-requests
+    defaults: {_controller: CoreBundle:Friends:friendRequests}
+
+friends_accept_friend_request:
+    path:   /friends/accept-friend-request
+    defaults: {_controller: CoreBundle:Friends:acceptFriendRequest}

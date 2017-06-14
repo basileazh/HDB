@@ -21,12 +21,23 @@ class FriendsController extends Controller
         if($request->isXMLHttpRequest())
         {
             $em = $this->getDoctrine()->getManager();
-            $repository = $em->getRepository('CoreBundle:Boug');
+            $bougRepository = $em->getRepository('CoreBundle:Boug');
+            $friendsRepository = $em->getRepository('CoreBundle:Friends');
+
+            $user = $this->get('security.token_storage')->getToken()->getUser();
 
             $nameSearched = $request->get('nameSearched');
-            $bougs = $repository->getBougsByPaternSearched($nameSearched);
+            $nonFriendBougs = $bougRepository->getBougsByPaternSearched($nameSearched);
 
-            return new JsonResponse(['bougs' => $this->prepareBougJSON($bougs)]);
+            $friends = $friendsRepository->getFriendsOfBoug($user);
+            $friendsRequestedByBoug = $friendsRepository->getFriendsRequestedBy($user);
+            $bougsRequestingUser = $friendsRepository->getBougsRequesting($user);
+            
+            $nonFriendBougs = array_diff($nonFriendBougs, $friends, $friendsRequestedByBoug, $bougsRequestingUser);
+
+            return new JsonResponse(['nonFriendBougs' => $this->prepareBougsJSON($nonFriendBougs),
+                                     'friendsRequestedByBoug' => $this->prepareBougsJSON($friendsRequestedByBoug),
+                                     'bougsRequestingUser' => $this->prepareBougsJSON($bougsRequestingUser)]);
         }
         return new Response("Error : this is not an Ajax request", 400);
     }
@@ -54,9 +65,43 @@ class FriendsController extends Controller
         return new Response("Error : this is not an Ajax request", 400);
     }
 
-    public function prepareBougJSON($bougs)
+    public function friendRequestsAction()
     {
-        $json = '{"bougs" : [';
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $friendRequests = $em->getRepository('CoreBundle:Friends')->getBougsRequesting($user);
+        return $this->render('CoreBundle:Friends:friendRequests.html.twig', [
+                    'friendRequests' => $this->prepareBougsJSON($friendRequests),
+                ]);
+    }
+
+    public function acceptFriendRequestAction(Request $request)
+    {
+        if($request->isXMLHttpRequest())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $boug = $request->get('idBoug');
+            $friends = $em->getRepository('CoreBundle:Friends')->findOneBy(['boug1' => $boug, 'boug2' => $user]);
+            if($friends->getWaitingForAnswer() == true)
+            {
+                $friends->setDateSinceAgreement(new \DateTime('now'));
+                $friends->setWaitingForAnswer(false);
+                $em->persist($friends);
+                $em->flush();
+            }
+                          
+            return new JsonResponse(['friendAdded' => 'success']);
+        }
+        return new Response("Error : this is not an Ajax request", 400);
+    }
+
+
+
+    //Prépare un JSON à partir d'une liste de bougs
+    private function prepareBougsJSON($bougs)
+    {
+        $json = '[';
         $numBougs = count($bougs);
         $i = 0;
         foreach ($bougs as $key => $boug)
@@ -65,10 +110,9 @@ class FriendsController extends Controller
             if(++$i !== $numBougs)
                 $json.= ',';
         }
-        $json.= ']}';
+        $json.= ']';
         return $json;
     }
-
 }
 
 ?>

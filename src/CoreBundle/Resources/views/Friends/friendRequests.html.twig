@@ -1,0 +1,39 @@
+<html>
+<body>
+<ul class="dropdown-menu" id="friendRequestsList">
+  
+</ul>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+{% javascripts '@CoreBundle/Resources/public/js/function_acceptFriendRequestAjax.js' %}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+    
+<script>
+
+   	friendRequests = JSON.parse("{{ friendRequests | e('js') }}");
+
+   	$(document).ready(function()
+   	{
+        if(friendRequests.length == 0)
+        {
+            $('#friendRequestsList').append('Vous n\'avez aucune demande');
+        }
+        else
+        {
+            friendRequests.forEach(function(item)
+            {
+                $('#friendRequestsList').append('<li class="friendRequest" idBoug="'+item.id+'">'+item.username+' <button class="btn btn-primary acceptFriendRequest"> Accepter </button </li    >');
+            });
+        }
+
+
+        $('#friendRequestsList').on('click', 'button.acceptFriendRequest', function()
+        {
+            acceptFriendRequestAjax($(this).parent().attr('idBoug'));
+        });
+   		
+   	});
+</script>
+</body>
+</html>

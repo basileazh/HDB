@@ -23,9 +23,15 @@ use CoreBundle\Entity\BougStoryIsCharacter;
 class HomePageController extends Controller
 {
 
-  public function indexAction(Request $request)
-  {
-    $user = $this->get('security.token_storage')->getToken()->getUser();
+    public function indexAction(Request $request)
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+    
+        // $test = $this
+        //   ->getDoctrine()
+        //   ->getManager()
+        //   ->getRepository('CoreBundle:Friends')->getFriendsRequestedBy($user);
+    
     // Simulation de Boug user, debug
     $bougRepository = $this
       ->getDoctrine()
