@@ -1,0 +1,92 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Merge branch 'master' of https://github.com/basileazh/HDB
+
+# Conflicts:
+#	src/CoreBundle/Controller/HomePageController.php
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 2 different commits each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	new file:   src/CoreBundle/Controller/FriendsController.php
+#	modified:   src/CoreBundle/Controller/HomePageController.php
+#	modified:   src/CoreBundle/Entity/Friends.php
+#	modified:   src/CoreBundle/Entity/Friends.php~
+#	modified:   src/CoreBundle/Repository/BougRepository.php
+#	modified:   src/CoreBundle/Resources/config/routing.yml
+#	modified:   src/CoreBundle/Resources/views/HomePage/homepage.html.twig
+#	modified:   src/CoreBundle/Resources/views/layout.html.twig
+#
+:x^XXxx    ^X
+^X
+:q
+
+q
+:q
+<sv< !:,iraeounàçld.
