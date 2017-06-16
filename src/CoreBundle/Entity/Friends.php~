@@ -178,4 +178,28 @@ class Friends
     {
         return $this->boug2;
     }
+
+    /**
+     * Set dateSinceAgreement
+     *
+     * @param \DateTime $dateSinceAgreement
+     *
+     * @return Friends
+     */
+    public function setDateSinceAgreement($dateSinceAgreement)
+    {
+        $this->dateSinceAgreement = $dateSinceAgreement;
+
+        return $this;
+    }
+
+    /**
+     * Get dateSinceAgreement
+     *
+     * @return \DateTime
+     */
+    public function getDateSinceAgreement()
+    {
+        return $this->dateSinceAgreement;
+    }
 }

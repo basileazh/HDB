@@ -55,6 +55,7 @@ class Story
     private $dateCreation;
 
     /**
+     * @var \DateTime
      *
      * @ORM\Column(name="DateLastModification", type="datetime")
      * @Gedmo\Timestampable(on="update")
@@ -93,10 +94,17 @@ class Story
     private $groups;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="isPublic", type="boolean")
+     */
+    private $isPublic;
+
+    /**
      * Update $dateLastModification flield
      *
      * @ORM\PrePersist
-     */
+     */    
     public function updateDateLastModification()
     {
         $this->setDateLastModification(new \Datetime());
@@ -344,5 +352,29 @@ class Story
     public function getGroups()
     {
         return $this->groups;
+    }
+
+    /**
+     * Set isPublic
+     *
+     * @param boolean $isPublic
+     *
+     * @return Story
+     */
+    public function setIsPublic($isPublic)
+    {
+        $this->isPublic = $isPublic;
+
+        return $this;
+    }
+
+    /**
+     * Get isPublic
+     *
+     * @return boolean
+     */
+    public function getIsPublic()
+    {
+        return $this->isPublic;
     }
 }
