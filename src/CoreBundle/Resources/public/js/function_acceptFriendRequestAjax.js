@@ -1,7 +1,7 @@
 function acceptFriendRequestAjax(idBoug)
 {
     $.ajax({
-        url: "/HDB/web/app_dev.php/friends/accept-friend-request",
+        url: accept_friend_request_path,
         method:"post",
         data: {idBoug : idBoug}
     })
