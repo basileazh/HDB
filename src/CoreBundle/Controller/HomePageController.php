@@ -185,9 +185,7 @@ class HomePageController extends Controller
                  "content" : "'.$story->getContent().'",
                  "owner" : "'.$story->getOwner()->getUsername().'",
                  "rating" : {"rating" : "'.$rating[0].'", "nbrRatings" : "'.$rating[1].'"},
-                 "userRating" : "'.$repository->getStoryAccessForBoug($user, $story).'" }';
-                //TODO: rempalcer par cette ligne
-                 // "userRating" : "'.$repository->getStoryAccessForBoug($user, $story)->getNote().'" }';
+                 "userRating" : "'.$repository->getStoryAccessForBoug($user, $story)->getRating().'" }';
        if(++$i !== $numStories)
         $json.= ',';
     }
@@ -203,7 +201,7 @@ class HomePageController extends Controller
     $mean = 0;
     foreach ($readAccesses as $readAccess)
     {
-        $mean+=$readAccess->getNote();
+        $mean+=$readAccess->getRating();
     }
     return [$mean/count($readAccesses), count($readAccesses)];
   }

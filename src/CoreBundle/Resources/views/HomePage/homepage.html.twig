@@ -98,7 +98,7 @@
                                                                    story.title, 
                                                                    story.owner, 
                                                                    story.content, 
-                                                                   story.rating.rating != 0 ? story.rating : 'Aucun vote', 
+                                                                   story.rating.rating != 0 ? story.rating.rating : 'Aucun vote', 
                                                                    story.rating.nbrRatings));
             userRating = story.userRating.length == 0 ? 0 : story.userRating;
             $('input[name="story-'+story.id+'-rating"][value="'+userRating+'"]').prop('checked', true);

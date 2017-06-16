@@ -40,9 +40,9 @@ class BougStoryReadAccess
     /**
      * @var array
      *
-     * @ORM\Column(name="Note", type="array", nullable=true)
+     * @ORM\Column(name="Rating", type="array", nullable=true)
      */
-    private $note;
+    private $rating;
 
 
     /**
@@ -53,30 +53,6 @@ class BougStoryReadAccess
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set note
-     *
-     * @param array $note
-     *
-     * @return BougStoryReadAccess
-     */
-    public function setNote($note)
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
-    /**
-     * Get note
-     *
-     * @return array
-     */
-    public function getNote()
-    {
-        return $this->note;
     }
 
     /**
@@ -125,5 +101,29 @@ class BougStoryReadAccess
     public function getStory()
     {
         return $this->story;
+    }
+
+    /**
+     * Set rating
+     *
+     * @param array $rating
+     *
+     * @return BougStoryReadAccess
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * Get rating
+     *
+     * @return array
+     */
+    public function getRating()
+    {
+        return $this->rating;
     }
 }
