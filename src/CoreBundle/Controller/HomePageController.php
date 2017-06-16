@@ -19,7 +19,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-
 use Doctrine\ORM\EntityRepository;
 
 class HomePageController extends Controller
@@ -122,12 +121,48 @@ class HomePageController extends Controller
     $stories = $storyRepository->findBy(
         [ 'owner' => $user ]
       );
-  	
     return $this->render('CoreBundle:HomePage:homepage.html.twig', [
       'user'  => $user,
       'storyForm' => $storyForm->createView(),
-      'stories' => $stories,
+      'stories' => $this->prepareStoriesJSON($stories, $user),
     ]);
+  }
+
+  private function prepareStoriesJSON($stories, $user)
+  {
+    $json = '[';
+    $numStories = count($stories);
+    $i = 0;
+    $repository = $this->getDoctrine()->getManager()->getRepository('CoreBundle:BougStoryReadAccess');
+    foreach ($stories as $story)
+    {
+        $rating = $this->getStoryRating($story);
+        $json.='{"id" : "'.$story->getId().'", 
+                 "title" : "'.$story->getTitle().'",
+                 "content" : "'.$story->getContent().'",
+                 "owner" : "'.$story->getOwner()->getUsername().'",
+                 "rating" : {"rating" : "'.$rating[0].'", "nbrRatings" : "'.$rating[1].'"},
+                 "userRating" : "'.$repository->getStoryAccessForBoug($user, $story).'" }';
+                //TODO: rempalcer par cette ligne
+                 // "userRating" : "'.$repository->getStoryAccessForBoug($user, $story)->getNote().'" }';
+       if(++$i !== $numStories)
+        $json.= ',';
+    }
+    $json .= ']';
+    return $json;
+  }
+
+  private function getStoryRating($story)
+  {
+    $readAccesses = $story->getBougStoryReadAccess();
+    if(count($readAccesses) == 0)
+        return [0,0];
+    $mean = 0;
+    foreach ($readAccesses as $readAccess)
+    {
+        $mean+=$readAccess->getNote();
+    }
+    return [$mean/count($readAccesses), count($readAccesses)];
   }
 
 }

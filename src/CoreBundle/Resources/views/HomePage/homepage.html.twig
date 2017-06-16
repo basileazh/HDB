@@ -1,12 +1,33 @@
 {% extends "CoreBundle::layout.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+    #homepage-stories
+    {
+        word-wrap: break-word;
+    }
+    /*.story
+    {
+        border-width:1px;
+        border-style:solid;
+        border-color:black;
+    }*/
+    .story
+    {
+        border-top-width:1px;
+        border-top-style:solid;
+        border-top-color:blue;
+    }
+    </style>
+{% endblock %}
+
 {% block body %}
 	{{ parent() }}
-	Utilisateur courant : {{ user.name }} {{ user.firstName }}. Login : {{ user.username }}
 	<br>
 
 	{# 	Formulaire d'ajout de story #}
-	<h2> Ajouter une Story </h2>
+	<h2> Ajouter une Histoire </h2>
 
 	{{ form_start(storyForm) }}
 	{{ form_errors(storyForm) }}
@@ -46,13 +67,11 @@
 	{{ form_end(storyForm) }}
 
 	{# Affichages des stories #}
-	<h2> Stories de l'utilisateur courant : </h2>
-	{% for story in stories %}
-		<h3>{{ story.title }}</h3>
-		 <p>{{ story.content }}</p> 
-	{% endfor %}
+	<h3> Histoires récentes </h3>
+	<div id="homepage-stories">
 
-	
+	</div>
+
 
 {% endblock %}
 
@@ -68,35 +87,23 @@
 {% block javascripts %}
 {{ parent() }}
 <script>
-	//Fonction pour aller chercher des bougs en BDD à partir d'un motif
-	function searchFriendsAjax(nameSearched)
-	{
-		$.ajax({
-			url: "{{path('friends_get_boug_list')}}",
-			method:"post",
-			data: {nameSearched : nameSearched}
-		})
-		.done(function(data)
-		{
-			nonFriendBougs = JSON.parse(data['nonFriendBougs']);
-			friendsRequestedByBoug = JSON.parse(data['friendsRequestedByBoug']);
-			bougsRequestingUser = JSON.parse(data['bougsRequestingUser']);
-			bougsRequestingUser.forEach(function(item)
-			{
-				$('#friends-to-be-added').append("<div class='boug-requesting-user' id-boug="+item["id"]+">"+item["username"]+" <button class='accept-friend-request' id-boug="+item["id"]+">Accepter la demande</button></div>");
-			});
-			friendsRequestedByBoug.forEach(function(item)
-			{
-				$('#friends-to-be-added').append("<div class='friend-requested-byrboug' id-boug="+item["id"]+">"+item["username"]+" Demande envoyée</div>");
-			});
-			nonFriendBougs.forEach(function(item)
-			{
-				$('#friends-to-be-added').append("<div class='boug-to-be-added' id-boug="+item["id"]+">"+item["username"]+" <button class='send-friend-request' id-boug="+item["id"]+">Ajouter</button></div>");
-			});
-		});
-	}
+
+	var storyDisplayModel = "{{include('CoreBundle::HomePage/Models/storyDisplayModel.html.twig') | e('js')}}";
+    var homepageStories = JSON.parse("{{ stories | e('js') }}");
 
     $(document).ready(function() {
+    	homepageStories.forEach(function(story)
+    	{
+    		$('#homepage-stories').append(storyDisplayModel.format(story.id, 
+                                                                   story.title, 
+                                                                   story.owner, 
+                                                                   story.content, 
+                                                                   story.rating.rating != 0 ? story.rating : 'Aucun vote', 
+                                                                   story.rating.nbrRatings));
+            userRating = story.userRating.length == 0 ? 0 : story.userRating;
+            $('input[name="story-'+story.id+'-rating"][value="'+userRating+'"]').prop('checked', true);
+
+    	});
 
     	//On va chercher les bougs en BDD lorsque l'utilisateur effectue une recherche
     	$('#add-friends-zone').on('keyup', 'input', function(e){
@@ -125,9 +132,76 @@
     	{
     		acceptFriendRequestAjax($(this).attr('id-boug'));
     	});
+
+        $('#homepage-stories').on('change', 'input.story-rating-rate', function()
+        {
+            storyId = $(this).closest('div.story').attr('id-story');
+            rate = $(this).val();
+            rateStoryAjax(storyId, rate);
+        });
     });
 
+    String.prototype.replaceAll = function(search, replacement)
+    {
+        var target = this;
+        return target.split(search).join(replacement);
+    };
+    String.prototype.format = function()
+    {
+        var formatted = this;
+        for( var arg in arguments ) {
+            formatted = formatted.replaceAll('{' + arg + '}', arguments[arg]);
+        }
+        return formatted;
+    };
+
+    function rateStoryAjax(storyId, rate)
+    {
+        $.ajax({
+            url: "{{path('story_rate')}}",
+            method:"post",
+            data: {storyId : storyId, rate : rate}
+        })
+        .done(function(data)
+        {
+            alert('gg');
+        });
+    }
+
+
+    //Fonction pour aller chercher des bougs en BDD à partir d'un motif
+    function searchFriendsAjax(nameSearched)
+    {
+        $.ajax({
+            url: "{{path('friends_get_boug_list')}}",
+            method:"post",
+            data: {nameSearched : nameSearched}
+        })
+        .done(function(data)
+        {
+            nonFriendBougs = JSON.parse(data['nonFriendBougs']);
+            friendsRequestedByBoug = JSON.parse(data['friendsRequestedByBoug']);
+            bougsRequestingUser = JSON.parse(data['bougsRequestingUser']);
+            bougsRequestingUser.forEach(function(item)
+            {
+                $('#friends-to-be-added').append("<div class='boug-requesting-user' id-boug="+item["id"]+">"+item["username"]+" <button class='accept-friend-request' id-boug="+item["id"]+">Accepter la demande</button></div>");
+            });
+            friendsRequestedByBoug.forEach(function(item)
+            {
+                $('#friends-to-be-added').append("<div class='friend-requested-byrboug' id-boug="+item["id"]+">"+item["username"]+" Demande envoyée</div>");
+            });
+            nonFriendBougs.forEach(function(item)
+            {
+                $('#friends-to-be-added').append("<div class='boug-to-be-added' id-boug="+item["id"]+">"+item["username"]+" <button class='send-friend-request' id-boug="+item["id"]+">Ajouter</button></div>");
+            });
+        });
+    }
+
 </script>
+
+
+
+
 
 <script type="text/javascript">
     // keep track of how many bougReadAccess fields have been rendered

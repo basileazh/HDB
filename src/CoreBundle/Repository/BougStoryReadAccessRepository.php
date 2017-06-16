@@ -10,4 +10,15 @@ namespace CoreBundle\Repository;
  */
 class BougStoryReadAccessRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getStoryAccessForBoug($boug, $story)
+	{
+		return $this
+            ->createQueryBuilder('bsra')
+            ->where('bsra.story = :story')
+            ->andWhere('bsra.boug = :boug')
+            ->setParameter('story', $story)
+            ->setParameter('boug', $boug)
+            ->getQuery()
+            ->getOneOrNullResult();
+	}
 }

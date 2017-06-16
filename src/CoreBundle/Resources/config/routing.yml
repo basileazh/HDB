@@ -29,3 +29,7 @@ friends_friend_requests:
 friends_accept_friend_request:
     path:   /friends/accept-friend-request
     defaults: {_controller: CoreBundle:Friends:acceptFriendRequest}
+
+story_rate:
+    path: /story/rate
+    defaults: {_controller: CoreBundle:Story:rate}
