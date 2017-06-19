@@ -65,18 +65,18 @@ class Story
     /**
      * @var BougStoryReadAccess
      *
-     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="story", cascade={"persist", "remove"})
      */
     private $bougStoryReadAccess;
+    //* @ORM\JoinColumn(nullable=false)
 
     /**
      * @var BougStoryIsCharacter
      *
-     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="story", cascade={"persist", "remove"})
      */
     private $bougStoryIsCharacter;
+     //* @ORM\JoinColumn(nullable=false)
 
     /**
      * @var Boug
@@ -89,7 +89,7 @@ class Story
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Story", inversedBy="stories", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\FriendsGroup", inversedBy="stories", cascade={"persist"})
      */
     private $groups;
 
@@ -99,6 +99,16 @@ class Story
      * @ORM\Column(name="isPublic", type="boolean")
      */
     private $isPublic;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->bougStoryReadAccess = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->bougStoryIsCharacter = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Update $dateLastModification flield
@@ -113,7 +123,7 @@ class Story
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -215,12 +225,29 @@ class Story
     {
         return $this->dateLastModification;
     }
+
     /**
-     * Constructor
+     * Set isPublic
+     *
+     * @param boolean $isPublic
+     *
+     * @return Story
      */
-    public function __construct()
+    public function setIsPublic($isPublic)
     {
-        $this->bougStoryReadAccess = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isPublic = $isPublic;
+
+        return $this;
+    }
+
+    /**
+     * Get isPublic
+     *
+     * @return boolean
+     */
+    public function getIsPublic()
+    {
+        return $this->isPublic;
     }
 
     /**
@@ -245,7 +272,6 @@ class Story
      */
     public function removeBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
     {
-         # $bougStoryReadAccess(null);
         $this->bougStoryReadAccess->removeElement($bougStoryReadAccess);
     }
 
@@ -321,11 +347,11 @@ class Story
     /**
      * Add group
      *
-     * @param \CoreBundle\Entity\Story $group
+     * @param \CoreBundle\Entity\FriendsGroup $group
      *
      * @return Story
      */
-    public function addGroup(\CoreBundle\Entity\Story $group)
+    public function addGroup(\CoreBundle\Entity\FriendsGroup $group)
     {
         $group->addStory($this);
         $this->groups[] = $group;
@@ -336,9 +362,9 @@ class Story
     /**
      * Remove group
      *
-     * @param \CoreBundle\Entity\Story $group
+     * @param \CoreBundle\Entity\FriendsGroup $group
      */
-    public function removeGroup(\CoreBundle\Entity\Story $group)
+    public function removeGroup(\CoreBundle\Entity\FriendsGroup $group)
     {
         $group->removeStory($this);
         $this->groups->removeElement($group);
@@ -352,29 +378,5 @@ class Story
     public function getGroups()
     {
         return $this->groups;
-    }
-
-    /**
-     * Set isPublic
-     *
-     * @param boolean $isPublic
-     *
-     * @return Story
-     */
-    public function setIsPublic($isPublic)
-    {
-        $this->isPublic = $isPublic;
-
-        return $this;
-    }
-
-    /**
-     * Get isPublic
-     *
-     * @return boolean
-     */
-    public function getIsPublic()
-    {
-        return $this->isPublic;
     }
 }

@@ -24,7 +24,7 @@ class BougStoryIsCharacter
     /**
      * @var Boug
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="storyAccess", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="bougStoryIsCharacter", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $boug;
@@ -32,7 +32,7 @@ class BougStoryIsCharacter
     /**
      * @var Story
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Story", inversedBy="bougAccess", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Story", inversedBy="bougStoryIsCharacter", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $story;
@@ -40,7 +40,7 @@ class BougStoryIsCharacter
     /**
      * @var array
      *
-     * @ORM\Column(name="Opinion", type="array", nullable=true)
+     * @ORM\Column(name="Opinion", type="string", nullable=true)
      */
     private $opinion;
 

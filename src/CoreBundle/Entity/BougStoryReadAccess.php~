@@ -24,7 +24,7 @@ class BougStoryReadAccess
     /**
      * @var Boug
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="storiesAccess", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="storiesAccess")
      * @ORM\JoinColumn(nullable=false)
      */
     private $boug;
@@ -32,7 +32,7 @@ class BougStoryReadAccess
     /**
      * @var Story
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Story", inversedBy="bougAccess", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Story", inversedBy="bougAccess")
      * @ORM\JoinColumn(nullable=false)
      */
     private $story;
@@ -45,61 +45,5 @@ class BougStoryReadAccess
     private $rating;
 
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set boug
-     *
-     * @param \CoreBundle\Entity\Boug $boug
-     *
-     * @return BougStoryReadAccess
-     */
-    public function setBoug(\CoreBundle\Entity\Boug $boug)
-    {
-        $this->boug = $boug;
-
-        return $this;
-    }
-
-    /**
-     * Get boug
-     *
-     * @return \CoreBundle\Entity\Boug
-     */
-    public function getBoug()
-    {
-        return $this->boug;
-    }
-
-    /**
-     * Set story
-     *
-     * @param \CoreBundle\Entity\Story $story
-     *
-     * @return BougStoryReadAccess
-     */
-    public function setStory(\CoreBundle\Entity\Story $story)
-    {
-        $this->story = $story;
-
-        return $this;
-    }
-
-    /**
-     * Get story
-     *
-     * @return \CoreBundle\Entity\Story
-     */
-    public function getStory()
-    {
-        return $this->story;
-    }
+    
 }

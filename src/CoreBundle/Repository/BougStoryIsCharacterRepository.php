@@ -10,4 +10,15 @@ namespace CoreBundle\Repository;
  */
 class BougStoryIsCharacterRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getIsCharacterForBoug($boug, $story)
+	{
+		return $this
+            ->createQueryBuilder('bsic')
+            ->where('bsic.story = :story')
+            ->andWhere('bsic.boug = :boug')
+            ->setParameter('story', $story)
+            ->setParameter('boug', $boug)
+            ->getQuery()
+            ->getOneOrNullResult();
+	}
 }

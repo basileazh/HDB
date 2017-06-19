@@ -55,9 +55,7 @@ class HomePageController extends Controller
                         'query_builder' => function (EntityRepository $er) use ($user, $userFriendsUsernames) {
                             return $er->createQueryBuilder('boug')
                             ->addSelect('boug')
-                            ->where('boug.username != :ownerUsername')
                             ->andWhere('boug.username IN(:userFriendsUsernames)')
-                            ->setParameter('ownerUsername', $user->getUsername())
                             ->setParameter('userFriendsUsernames', $userFriendsUsernames)
                             ->orderBy('boug.username', 'ASC');
                             },
@@ -76,10 +74,10 @@ class HomePageController extends Controller
                         'query_builder' => function (EntityRepository $er) use ($user, $userFriendsUsernames) {
                             return $er->createQueryBuilder('boug')
                             ->addSelect('boug')
-                            ->where('boug.username != :ownerUsername')
-                            ->andWhere('boug.username IN(:userFriendsUsernames)')
-                            ->setParameter('userFriendsUsernames', $userFriendsUsernames)
+                            ->where('boug.username = :ownerUsername OR boug.username IN(:userFriendsUsernames)')
+                            // ->andWhere('boug.username IN(:userFriendsUsernames)')
                             ->setParameter('ownerUsername', $user->getUsername())
+                            ->setParameter('userFriendsUsernames', $userFriendsUsernames)
                             ->orderBy('boug.username', 'ASC');
                             },
                         'choice_label' => 'name',
@@ -121,25 +119,25 @@ class HomePageController extends Controller
         for($i = 0; $i < count($storyFormData['bougReadAccess']); $i++) {
           $storyReadAccesses[$i] = new BougStoryReadAccess();
           $storyReadAccesses[$i]->setBoug($storyFormData['bougReadAccess'][$i]);
-          $storyReadAccesses[$i]->setStory($story);
+          // $storyReadAccesses[$i]->setStory($story);
+          // $em->persist($storyReadAccesses[$i]);
           $story->addBougStoryReadAccess($storyReadAccesses[$i]);
-          $em->persist($storyReadAccesses[$i]);
         }
         // On enregistre le user qui crée l'histoire comme ayant accès en lecture à sa propre histoire, afin qu'il puisse la noter
         $ownReadAccess = new BougStoryReadAccess();
         $ownReadAccess->setBoug($user);
-        $ownReadAccess->setStory($story);
+        // $ownReadAccess->setStory($story);
+        // $em->persist($ownReadAccess);
         $story->addBougStoryReadAccess($ownReadAccess);
-        $em->persist($ownReadAccess);
 
         // Personnages de l'histoire
         $storyIsCharacters = [];
         for($i = 0; $i < count($storyFormData['bougIsCharacter']); $i++) {
           $storyIsCharacters[$i] = new BougStoryIsCharacter();
           $storyIsCharacters[$i]->setBoug($storyFormData['bougIsCharacter'][$i]);
-          $storyIsCharacters[$i]->setStory($story);
+          // $storyIsCharacters[$i]->setStory($story);
           $story->addBougStoryIsCharacter($storyIsCharacters[$i]);
-          $em->persist($storyIsCharacters[$i]);
+          // $em->persist($storyIsCharacters[$i]);
         }
        
         // Owner de l'histoire
@@ -179,33 +177,24 @@ class HomePageController extends Controller
     $repository = $this->getDoctrine()->getManager()->getRepository('CoreBundle:BougStoryReadAccess');
     foreach ($stories as $story)
     {
-        $rating = $this->getStoryRating($story);
+        $storyservice = $this->container->get('core.storyservice');
+        $rating = $storyservice->getStoryRating($story);
         $json.='{"id" : "'.$story->getId().'", 
                  "title" : "'.$story->getTitle().'",
                  "content" : "'.$story->getContent().'",
                  "owner" : "'.$story->getOwner()->getUsername().'",
-                 "rating" : {"rating" : "'.$rating[0].'", "nbrRatings" : "'.$rating[1].'"},
-                 "userRating" : "'.$repository->getStoryAccessForBoug($user, $story)->getRating().'" }';
+                 "rating" : {"rating" : "'.$rating[0].'", "ratingsCount" : "'.$rating[1].'"},
+                 "userRating" : "'.$repository->getStoryAccessForBoug($user, $story)->getRating().'",
+                 "userOpinion" : "'.$storyservice->bougOpinionForStory($user, $story).'",
+                 "charactersOpinions" : '.$storyservice->getStoryOpinionsJSON($story).'}';
        if(++$i !== $numStories)
         $json.= ',';
     }
     $json .= ']';
+    // dump($json);
+    // die;
     return $json;
   }
-
-  private function getStoryRating($story)
-  {
-    $readAccesses = $story->getBougStoryReadAccess();
-    if(count($readAccesses) == 0)
-        return [0,0];
-    $mean = 0;
-    foreach ($readAccesses as $readAccess)
-    {
-        $mean+=$readAccess->getRating();
-    }
-    return [$mean/count($readAccesses), count($readAccesses)];
-  }
-
 }
 
 ?>

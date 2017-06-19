@@ -140,6 +140,7 @@ class Friends
      */
     public function setBoug1(\CoreBundle\Entity\Boug $boug1)
     {
+        // $boug1->addFriendsAdderOf($this);
         $this->boug1 = $boug1;
 
         return $this;
@@ -164,6 +165,7 @@ class Friends
      */
     public function setBoug2(\CoreBundle\Entity\Boug $boug2)
     {
+        // $boug2->addFriendsAddedBy($this);
         $this->boug2 = $boug2;
 
         return $this;

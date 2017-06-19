@@ -66,17 +66,17 @@ class Story
      * @var BougStoryReadAccess
      *
      * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryReadAccess", mappedBy="boug", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryReadAccess;
+    //* @ORM\JoinColumn(nullable=false)
 
     /**
      * @var BougStoryIsCharacter
      *
      * @ORM\OneToMany(targetEntity="CoreBundle\Entity\BougStoryIsCharacter", mappedBy="boug", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
      */
     private $bougStoryIsCharacter;
+     //* @ORM\JoinColumn(nullable=false)
 
     /**
      * @var Boug
@@ -89,7 +89,7 @@ class Story
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Story", inversedBy="stories", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\FriendsGroup", inversedBy="stories", cascade={"persist"})
      */
     private $groups;
 
@@ -97,285 +97,7 @@ class Story
      * @var bool
      *
      * @ORM\Column(name="isPublic", type="boolean")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $isPublic;
 
-    /**
-     * Update $dateLastModification flield
-     *
-     * @ORM\PrePersist
-     */    
-    public function updateDateLastModification()
-    {
-        $this->setDateLastModification(new \Datetime());
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return Story
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set content
-     *
-     * @param string $content
-     *
-     * @return Story
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get content
-     *
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * Set dateCreation
-     *
-     * @param \DateTime $dateCreation
-     *
-     * @return Story
-     */
-    public function setDateCreation($dateCreation)
-    {
-        $this->dateCreation = $dateCreation;
-
-        return $this;
-    }
-
-    /**
-     * Get dateCreation
-     *
-     * @return \DateTime
-     */
-    public function getDateCreation()
-    {
-        return $this->dateCreation;
-    }
-
-    /**
-     * Set dateLastModification
-     *
-     * @param \DateTime $dateLastModification
-     *
-     * @return Story
-     */
-    public function setDateLastModification($dateLastModification)
-    {
-        $this->dateLastModification = $dateLastModification;
-
-        return $this;
-    }
-
-    /**
-     * Get dateLastModification
-     *
-     * @return \DateTime
-     */
-    public function getDateLastModification()
-    {
-        return $this->dateLastModification;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->bougStoryReadAccess = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add bougStoryReadAccess
-     *
-     * @param \CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
-     *
-     * @return Story
-     */
-    public function addBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
-    {
-        $bougStoryReadAccess->setStory($this);
-        $this->bougStoryReadAccess[] = $bougStoryReadAccess;
-
-        return $this;
-    }
-
-    /**
-     * Remove bougStoryReadAccess
-     *
-     * @param \CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess
-     */
-    public function removeBougStoryReadAccess(\CoreBundle\Entity\BougStoryReadAccess $bougStoryReadAccess)
-    {
-         # $bougStoryReadAccess(null);
-        $this->bougStoryReadAccess->removeElement($bougStoryReadAccess);
-    }
-
-    /**
-     * Get bougStoryReadAccess
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBougStoryReadAccess()
-    {
-        return $this->bougStoryReadAccess;
-    }
-
-    /**
-     * Add bougStoryIsCharacter
-     *
-     * @param \CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
-     *
-     * @return Story
-     */
-    public function addBougStoryIsCharacter(\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
-    {
-        $bougStoryIsCharacter->setStory($this);
-        $this->bougStoryIsCharacter[] = $bougStoryIsCharacter;
-
-        return $this;
-    }
-
-    /**
-     * Remove bougStoryIsCharacter
-     *
-     * @param \CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter
-     */
-    public function removeBougStoryIsCharacter(\CoreBundle\Entity\BougStoryIsCharacter $bougStoryIsCharacter)
-    {
-        $this->bougStoryIsCharacter->removeElement($bougStoryIsCharacter);
-    }
-
-    /**
-     * Get bougStoryIsCharacter
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBougStoryIsCharacter()
-    {
-        return $this->bougStoryIsCharacter;
-    }
-
-    /**
-     * Set owner
-     *
-     * @param \CoreBundle\Entity\Boug $owner
-     *
-     * @return Story
-     */
-    public function setOwner(\CoreBundle\Entity\Boug $owner)
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
-
-    /**
-     * Get owner
-     *
-     * @return \CoreBundle\Entity\Boug
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
-
-    /**
-     * Add group
-     *
-     * @param \CoreBundle\Entity\Story $group
-     *
-     * @return Story
-     */
-    public function addGroup(\CoreBundle\Entity\Story $group)
-    {
-        $group->addStory($this);
-        $this->groups[] = $group;
-
-        return $this;
-    }
-
-    /**
-     * Remove group
-     *
-     * @param \CoreBundle\Entity\Story $group
-     */
-    public function removeGroup(\CoreBundle\Entity\Story $group)
-    {
-        $group->removeStory($this);
-        $this->groups->removeElement($group);
-    }
-
-    /**
-     * Get groups
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getGroups()
-    {
-        return $this->groups;
-    }
-
-    /**
-     * Set isPublic
-     *
-     * @param boolean $isPublic
-     *
-     * @return Story
-     */
-    public function setIsPublic($isPublic)
-    {
-        $this->isPublic = $isPublic;
-
-        return $this;
-    }
-
-    /**
-     * Get isPublic
-     *
-     * @return boolean
-     */
-    public function getIsPublic()
-    {
-        return $this->isPublic;
-    }
 }

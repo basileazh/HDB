@@ -99,8 +99,33 @@ class StoryController extends Controller
 
             $em->persist($access);
             $em->flush();
-                          
-            return new JsonResponse(['rate' => 'success']);
+
+            $ratings = $this->container->get('core.storyservice')->getStoryRating($story);    
+            return new JsonResponse(['rate' => 'success', 'newRating' => $ratings[0], 'newRatingsCount' => $ratings[1]]);
+        }
+        return new Response("Error : this is not an Ajax request", 400);
+    }
+
+    public function giveOpinionAction(Request $request)
+    {
+        if($request->isXMLHttpRequest())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+
+            $storyId = $request->get('storyId');
+            $story = $em->getRepository('CoreBundle:Story')->find($storyId);
+            $opinion = $request->get('opinion');
+
+            $access = $em->getRepository('CoreBundle:BougStoryIsCharacter')->getIsCharacterForBoug($user, $story);
+            $access->setOpinion($opinion == 'noOpinion' ? null : $opinion);
+
+            $em->persist($access);
+            $em->flush();
+
+            // $ratings = $this->container->get('core.storyservice')->getStoryRating($story);    
+            return new JsonResponse(['opinion' => 'success', 'newCharactersOpinions' => $storyservice = $this->container->get('core.storyservice')->getStoryOpinionsJSON($story)]);
+            // return new JsonResponse(['opinion' => 'success', 'newRating' => $ratings[0], 'newRatingsCount' => $ratings[1]]);
         }
         return new Response("Error : this is not an Ajax request", 400);
     }

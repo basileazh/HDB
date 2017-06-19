@@ -69,7 +69,6 @@
 	{# Affichages des stories #}
 	<h3> Histoires récentes </h3>
 	<div id="homepage-stories">
-
 	</div>
 
 
@@ -88,28 +87,51 @@
 {{ parent() }}
 <script>
 
+    var storyOpinionFormModel = "{{include('CoreBundle::HomePage/Models/storyOpinionFormModel.html.twig') | e('js')}}";
 	var storyDisplayModel = "{{include('CoreBundle::HomePage/Models/storyDisplayModel.html.twig') | e('js')}}";
     var homepageStories = JSON.parse("{{ stories | e('js') }}");
 
     $(document).ready(function() {
     	homepageStories.forEach(function(story)
     	{
+            if(story.userOpinion != 'notCharacter')
+                storyOpinionForm = storyOpinionFormModel.format(story.id);
+            else
+                storyOpinionForm = '';
+            if(story.charactersOpinions.length != 0)
+            {
+                storyOpinions = "Les avis des personnages de cette histoire: Vraie : <span class='countTrue'>"+story.charactersOpinions.countTrue+"</span> - Fake : <span class='countFake'>"+story.charactersOpinions.countFake+"</span> - Je ne m'en rappelle plus : <span class='countDontRemember'>"+story.charactersOpinions.countDontRemember+"</span><br><div class='charactersOpinions' story-id='"+story.id+"'>";
+                storyOpinions+=giveCharactersOpinionsHTML(story.charactersOpinions.opinions);
+                storyOpinions+='</div>';
+            }
+
     		$('#homepage-stories').append(storyDisplayModel.format(story.id, 
                                                                    story.title, 
                                                                    story.owner, 
-                                                                   story.content, 
+                                                                   story.content,
+                                                                   storyOpinionForm,
+                                                                   storyOpinions,
                                                                    story.rating.rating != 0 ? story.rating.rating : 'Aucun vote', 
-                                                                   story.rating.nbrRatings));
+                                                                   story.rating.ratingsCount
+                                                                   ));
+
+            
+
+
             userRating = story.userRating.length == 0 ? 0 : story.userRating;
             $('input[name="story-'+story.id+'-rating"][value="'+userRating+'"]').prop('checked', true);
-
+            if(story.userOpinion != 'notCharacter')
+            {
+                userOpinion = story.userOpinion.length == 0 ? 'noOpinion' : story.userOpinion;
+                $('input[name="story-'+story.id+'-opinion"][value="'+userOpinion+'"]').prop('checked', true);
+            }
     	});
 
     	//On va chercher les bougs en BDD lorsque l'utilisateur effectue une recherche
     	$('#add-friends-zone').on('keyup', 'input', function(e){
     		if(e.which != 8)
     		{
-    			$('#friends-to-be-added').empty();	
+    			$('#friends-to-be-added').empty();
     			searchFriendsAjax($(this).val());
     		}
     	})
@@ -138,6 +160,12 @@
             storyId = $(this).closest('div.story').attr('id-story');
             rate = $(this).val();
             rateStoryAjax(storyId, rate);
+        })
+        .on('change', 'input.story-opinion-choice', function()
+        {
+            storyId = $(this).closest('div.story').attr('id-story');
+            opinion = $(this).val();
+            giveOpinionAjax(storyId, opinion);
         });
     });
 
@@ -164,7 +192,40 @@
         })
         .done(function(data)
         {
-            alert('gg');
+            newRating = data['newRating'];
+            newRatingsCount = data['newRatingsCount'];
+
+            divStory = $('div.story[id-story="'+storyId+'"]');
+            divStory.find('.story-rating-mean').empty().append(newRating);
+            divStory.find('.story-rating-count').empty().append(newRatingsCount);
+        });
+    }
+
+    function giveOpinionAjax(storyId, opinion)
+    {
+        $.ajax({
+            url: "{{path('story_give_opinion')}}",
+            method:"post",
+            data: {storyId : storyId, opinion : opinion}
+        })
+        .done(function(data)
+        {
+            newOpinions = JSON.parse(data['newCharactersOpinions']);
+            divOpinions = $('div.story[id-story="'+storyId+'"] .opinions');
+            // $('div.charactersOpinions[story-id="'+storyId+'"]').empty().append(giveCharactersOpinionsHTML(newOpinions.opinions));
+
+            divOpinions.find('.charactersOpinions').empty().append(giveCharactersOpinionsHTML(newOpinions.opinions));
+            divOpinions.find('.countTrue').empty().append(newOpinions.countTrue);
+            divOpinions.find('.countFake').empty().append(newOpinions.countFake);
+            divOpinions.find('.countDontRemember').empty().append(newOpinions.countDontRemember);
+
+            
+            // newRating = data['newRating'];
+            // newRatingsCount = data['newRatingsCount'];
+
+            // divStory = $('div.story[id-story="'+storyId+'"]');
+            // divStory.find('.story-rating-mean').empty().append(newRating);
+            // divStory.find('.story-rating-count').empty().append(newRatingsCount);
         });
     }
 
@@ -195,6 +256,33 @@
                 $('#friends-to-be-added').append("<div class='boug-to-be-added' id-boug="+item["id"]+">"+item["username"]+" <button class='send-friend-request' id-boug="+item["id"]+">Ajouter</button></div>");
             });
         });
+    }
+
+    function giveCharactersOpinionsHTML(charactersOpinions)
+    {
+        var html = '';
+        charactersOpinions.forEach(function(opinion)
+        {
+            if(opinion.opinion.length != 0 && opinion.username != '{{ user.username }}')
+            {
+                switch(opinion.opinion)
+                {
+                    case 'true':
+                        op = 'Vraie';
+                        break;
+                    case 'fake':
+                        op = 'Fake';
+                        break;
+                    case 'dontremember':
+                        op = 'Ne s\'en souvient plus';
+                        break;
+                    default :
+                        op = '';
+                }
+                html+= opinion.username+" : "+op+"<br>"; 
+            }
+        });
+        return html;
     }
 
 </script>

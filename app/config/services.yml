@@ -8,3 +8,6 @@ services:
         class: CoreBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: core_user_registration }
+    core.storyservice:
+        class: CoreBundle\Service\StoryService
+        arguments: []

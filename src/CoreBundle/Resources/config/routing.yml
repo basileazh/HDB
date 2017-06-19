@@ -33,3 +33,7 @@ friends_accept_friend_request:
 story_rate:
     path: /story/rate
     defaults: {_controller: CoreBundle:Story:rate}
+
+story_give_opinion:
+    path: /story/give-opinion
+    defaults: {_controller: CoreBundle:Story:giveOpinion}

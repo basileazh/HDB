@@ -24,7 +24,7 @@ class BougStoryReadAccess
     /**
      * @var Boug
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="storiesAccess", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Boug", inversedBy="storiesAccess")
      * @ORM\JoinColumn(nullable=false)
      */
     private $boug;
@@ -32,7 +32,7 @@ class BougStoryReadAccess
     /**
      * @var Story
      *
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Story", inversedBy="bougAccess", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Story", inversedBy="bougStoryReadAccess")
      * @ORM\JoinColumn(nullable=false)
      */
     private $story;
@@ -45,14 +45,40 @@ class BougStoryReadAccess
     private $rating;
 
 
+    
+
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set rating
+     *
+     * @param array $rating
+     *
+     * @return BougStoryReadAccess
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * Get rating
+     *
+     * @return array
+     */
+    public function getRating()
+    {
+        return $this->rating;
     }
 
     /**
@@ -101,29 +127,5 @@ class BougStoryReadAccess
     public function getStory()
     {
         return $this->story;
-    }
-
-    /**
-     * Set rating
-     *
-     * @param array $rating
-     *
-     * @return BougStoryReadAccess
-     */
-    public function setRating($rating)
-    {
-        $this->rating = $rating;
-
-        return $this;
-    }
-
-    /**
-     * Get rating
-     *
-     * @return array
-     */
-    public function getRating()
-    {
-        return $this->rating;
     }
 }
