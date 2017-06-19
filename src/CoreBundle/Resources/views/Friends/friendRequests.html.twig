@@ -10,7 +10,7 @@
 {% endjavascripts %}
     
 <script>
-    var accept_friend_request_path = "{{path('friends_get_boug_list')}}";
+    var accept_friend_request_path = "{{path('friends_accept_friend_request')}}";
    	friendRequests = JSON.parse("{{ friendRequests | e('js') }}");
 
    	$(document).ready(function()
