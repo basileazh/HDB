@@ -8,6 +8,7 @@
 		    	#left-col, #right-col { background-color: lightgrey}
     		</style>
         <!-- <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/> -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 		{% endblock %}
 	</head>
 <body>
@@ -72,6 +73,7 @@
 	</div>
 	<div id="right-col" class="col-md-2">
 		{% block rightcol %} <!-- La colonne de droite  -->
+            {# Zone d'ajout d'amis #}
             <div id="add-friends-zone" class="row">
                 <h3>Ajouter des amis</h3>
                 <input id="friends-search-input" type="text" class="form-control" placeholder="Rechercher des amis">
@@ -88,7 +90,9 @@
 {% block javascripts %}
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <!--<script type="text/javascript" src="js/bootstrap-multiselect.js"></script> -->
+
     <script>
     $(document).ready(function() {
 
@@ -161,6 +165,8 @@
 
 
     </script>
+
+
 {% endblock %}
 
 </body>
