@@ -13,16 +13,22 @@ class FriendsRepository extends \Doctrine\ORM\EntityRepository
     //Donne tous les bougs demandés en amis qui n'ont pas encore accepté l'invitation
     public function getFriendsRequestedBy($boug)
     {
-    	$query = $this->_em->createQuery('SELECT IDENTITY(f.boug2) FROM CoreBundle:Friends f INNER JOIN CoreBundle:Boug b WHERE b.id = :idboug AND b = f.boug1 AND f.waitingForAnswer = true');
+        $dqlQuery = 'SELECT IDENTITY(f.boug2) FROM CoreBundle:Friends f INNER JOIN CoreBundle:Boug b WHERE b.id = :idboug AND b = f.boug1 AND f.waitingForAnswer = true';
+
+    	$query = $this->_em->createQuery($dqlQuery);
         $query->setParameter('idboug', $boug->getId());
+
   		return $this->getBougsFromIds($query->getResult());
     }
 
     //Donne tous les bougs demandés en amis qui n'ont pas encore accepté l'invitation
     public function getBougsRequesting($boug)
     {
-    	$query = $this->_em->createQuery('SELECT IDENTITY(f.boug1) FROM CoreBundle:Friends f INNER JOIN CoreBundle:Boug b WHERE b.id = :idboug AND b = f.boug2 AND f.waitingForAnswer = true');
+        $dqlQuery = 'SELECT IDENTITY(f.boug1) FROM CoreBundle:Friends f INNER JOIN CoreBundle:Boug b WHERE b.id = :idboug AND b = f.boug2 AND f.waitingForAnswer = true';
+
+    	$query = $this->_em->createQuery($dqlQuery);
         $query->setParameter('idboug', $boug->getId());
+
   		return $this->getBougsFromIds($query->getResult());
     }
 

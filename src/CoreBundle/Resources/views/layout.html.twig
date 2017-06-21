@@ -14,6 +14,7 @@
 
 {% block navbar %}
 
+<!-- barre de navigation en haut des pages -->
 <nav id="navbar" class="navbar navbar-static-top navbar-inverse">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -44,13 +45,11 @@
       </form>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{ user.username }} <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
+            <li><a href="{{ path('boug_profile', {'username' : user.username}) }}">Voir mon profil</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
           </ul>
         </li>
       </ul>
@@ -63,16 +62,21 @@
 {% block content %}
 <div class="row">
 	<div id="left-col" class="col-md-2">
-		{% block leftcol %}
+		{% block leftcol %} <!-- La colonne de gauche  -->
 
 		{% endblock %}
 	</div>
 	<div class="col-md-8">
-	{% block body %}
+	{% block body %} <!-- Le contenu principale de la page  -->
 	{% endblock %}
 	</div>
 	<div id="right-col" class="col-md-2">
-		{% block rightcol %}
+		{% block rightcol %} <!-- La colonne de droite  -->
+            <div id="add-friends-zone" class="row">
+                <h3>Ajouter des amis</h3>
+                <input id="friends-search-input" type="text" class="form-control" placeholder="Rechercher des amis">
+                <div id="friends-to-be-added"></div>
+            </div>
 		{% endblock %}
 	</div>
 </div>
@@ -85,6 +89,78 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <!--<script type="text/javascript" src="js/bootstrap-multiselect.js"></script> -->
+    <script>
+    $(document).ready(function() {
+
+        //On va chercher les bougs en BDD lorsque l'utilisateur effectue une recherche
+        $('#add-friends-zone').on('keyup', 'input', function(e){
+            if(e.which != 8) //Si il n'appuie pas sur retour
+            {
+                //On vide l'espace des résultats
+                $('#friends-to-be-added').empty();
+                //On appelle la fonction qui va effectuer l'appel ajax avec la valeur recherchée
+                searchFriendsAjax($(this).val());
+            }
+        })
+        //Quand on clique sur 'ajouter en ami' à côté d'un résultat de recherche 
+        .on('click', 'button.send-friend-request', function()
+        {
+            idBoug = $(this).attr('id-boug');
+            $.ajax({
+                url: "{{path('friends_add_friend')}}",
+                method:"post",
+                data: {idBoug : idBoug}
+            })
+            .done(function(data)
+            {
+                //Une fois la demande envoyée on retire le bouton 'ajouter' et on met 'demande envoyée'
+                divBoug = $('div.boug-to-be-added[id-boug="'+idBoug+'"]')
+                divBoug.append('Demande effectuée <span class="glyphicon glyphicon-ok"></span>');
+                divBoug.find('button.send-friend-request').remove();
+            });
+        })
+        .on('click', 'button.accept-friend-request', function()
+        {
+            //Quand on clique sur 'accepter demande' on appelle la fonction Ajax
+            acceptFriendRequestAjax($(this).attr('id-boug'));
+        });
+    });
+
+    //Fonction pour aller chercher des bougs en BDD à partir d'un motif
+    function searchFriendsAjax(nameSearched)
+    {
+        $.ajax({
+            url: "{{path('friends_get_boug_list_for_friends_search')}}",
+            method:"post",
+            data: {nameSearched : nameSearched}
+        })
+        .done(function(data)
+        {$
+            //On recupère les différents résultats
+            nonFriendBougs = JSON.parse(data['nonFriendBougs']);
+            friendsRequestedByBoug = JSON.parse(data['friendsRequestedByBoug']);
+            bougsRequestingUser = JSON.parse(data['bougsRequestingUser']);
+
+            //On affiche les bougs ayant demandé le user en ami
+            bougsRequestingUser.forEach(function(item)
+            {
+                $('#friends-to-be-added').append("<div class='boug-requesting-user' id-boug="+item["id"]+">"+item["username"]+" <button class='accept-friend-request' id-boug="+item["id"]+">Accepter la demande</button></div>");
+            });
+            //On affiche les demandes que le user a effectué
+            friendsRequestedByBoug.forEach(function(item)
+            {
+                $('#friends-to-be-added').append("<div class='friend-requested-byrboug' id-boug="+item["id"]+">"+item["username"]+" Demande envoyée</div>");
+            });
+            //On affiche les autres bougs qui ne sont pas des amis du user
+            nonFriendBougs.forEach(function(item)
+            {
+                $('#friends-to-be-added').append("<div class='boug-to-be-added' id-boug="+item["id"]+">"+item["username"]+" <button class='send-friend-request' id-boug="+item["id"]+">Ajouter</button></div>");
+            });
+        });
+    }
+
+
+    </script>
 {% endblock %}
 
 </body>

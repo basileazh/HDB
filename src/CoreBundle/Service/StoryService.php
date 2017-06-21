@@ -5,6 +5,7 @@ use CoreBundle\Entity\BougStoryReadAccess;
 
 class StoryService
 {
+    //Fonction retournant la moyenne et le nombre de notes d'une story
 	public function getStoryRating($story)
     {
         $readAccesses = $story->getBougStoryReadAccess();
@@ -23,6 +24,8 @@ class StoryService
         return [$count > 0 ? $mean/$count : 0, $count];
     }
 
+    //Retourne un JSON contenant les opinions de chacun des personnages ainsi que le nombre de fakes, de true...
+    //On aura un JSON sous la forme : {"opinions" : [{"idBoug" : 36, "username" : letest, "opinion" : 'fake'}, {}], "countTrue" : 3, "countFake", ...}
     public function getStoryOpinionsJSON($story)
     {
         $characters = $story->getBougStoryIsCharacter();
@@ -61,7 +64,7 @@ class StoryService
         return $json;
     }
 
-
+    //Retourne l'opinion d'un boug pour une story. Si il n'est pas personnage on retourne 'notCharacter'
     public function bougOpinionForStory($boug, $story)
     {
     	$characters = $story->getBougStoryIsCharacter();
@@ -75,7 +78,8 @@ class StoryService
     	return 'notCharacter';
     } 
 
-
+    //TODO: initilisé?
+    //Fonction permettant de savoir si un boug est personnage d'une histoire
     // public function bougIsCharacterOfStory($boug, $story)
     // {
     //     $characters = $story->getBougStoryIsCharacter();

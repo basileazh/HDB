@@ -12,52 +12,71 @@ use CoreBundle\Entity\Story;
  */
 class StoryRepository extends \Doctrine\ORM\EntityRepository
 {
-	// Donnes les histoires qui doivent être affichées sur la HomePage d'un Boug
-	// Histoires de l'utilisateur + celles de ses amis + celles de ses groupes
-	// Les histoires sont rendues dans l'ordre chronologique en partant de la plus récente
+	//Donne les histoires qui seront affichées sur la page d'acceuil de l'utilisateur
 	public function getHomePageStories($user)
 	{
-		$friendsStories = $this->getFriendsStories($user);
-		$ownerStories = $this->getOwnerStories($user);
-
-		$storiesToDisplay = array_merge($friendsStories, $ownerStories);
-		usort($storiesToDisplay, ['Story', 'compareStoriesByCreationDate']);
+		$storiesToDisplay = $this->getStoriesBougCanAccess($user);
+		usort($storiesToDisplay, [Story::class, 'compareStoriesByCreationDate']);
 
 		return $storiesToDisplay; 
 	}
 
-	// Donne les histoires écrites par un Boug
-	public function getOwnerStories($user)
-	{
-		return $this->findBy(
-       		[ 'owner' => $user ]
-      	);
+	// Donnes les histoires qui doivent être affichées sur la HomePage d'un Boug
+	// Histoires de l'utilisateur + celles de ses amis + celles de ses groupes
+	// Les histoires sont rendues dans l'ordre chronologique en partant de la plus récente
+	// public function getHomePageStories($user)
+	// {
+	// 	// $friendsStories = $this->getFriendsStories($user);
+	// 	// $ownerStories = $this->getOwnerStories($user);
 
+	// 	// $storiesToDisplay = array_merge($friendsStories, $ownerStories);
+ //    	// $bougStoryReadAccessRepository = $this->getEntityManager()->getRepository('CoreBundle:bougStoryReadAccess');
+	// 	// $storiesToDisplay = $bougStoryReadAccessRepository->findBy(['boug' => $user]);
+	// 	usort($storiesToDisplay, [Story::class, 'compareStoriesByCreationDate']);
+
+	// 	return $storiesToDisplay; 
+	// }
+
+	//Donne les toutes les histoires pour lesquelles un boug a un accès en lecture
+	public function getStoriesBougCanAccess($boug)
+	{
+		$storiesIds = $this->_em
+            ->createQueryBuilder()
+            ->select('IDENTITY(bsra.story)')
+            ->from('CoreBundle:BougStoryReadAccess', 'bsra')
+            ->where('bsra.boug = :boug')
+            ->setParameter('boug', $boug)
+            ->getQuery()
+            ->getResult();
+
+    	$storyList = [];
+    	foreach ($storiesIds as $storyId)
+    		$storyList[] = $this->find($storyId[1]);
+    	return $storyList;
 	}
 
-	// Donne les histoires des amis d'un Boug
-	public function getFriendsStories($user)
-	{
-		$friendsRepository = $this->getEntityManager()->getRepository('CoreBundle:Friends');
-		$friends = $friendsRepository->getFriendsOfBoug($user);
+	// // Donne les histoires écrites par un Boug
+	// public function getOwnerStories($user)
+	// {
+	// 	return $this->findBy(
+ //       		[ 'owner' => $user ]
+ //      	);
+	// }
+
+	// // Donne les histoires des amis d'un Boug
+	// public function getFriendsStories($user)
+	// {
+	// 	$friendsRepository = $this->getEntityManager()->getRepository('CoreBundle:Friends');
+	// 	$friends = $friendsRepository->getFriendsOfBoug($user);
 
 
-		$queryBuilder = $this->createQueryBuilder('s')
-			->addSelect('s')
-			->where('s.owner IN(:owners)')
-			->setParameter('owners', $friends);
+	// 	$queryBuilder = $this->createQueryBuilder('s')
+	// 		->addSelect('s')
+	// 		->where('s.owner IN(:owners)')
+	// 		->setParameter('owners', $friends);
 
 
-  		return $queryBuilder->getQuery()->getResult();
-	}
+ //  		return $queryBuilder->getQuery()->getResult();
+	// }
 
-	// Compare deux Stories selon leur date de création. Renvoie 0 si égal, 1 si $s1 est plus récente, -1 si $s2 est plus récente
-	public static function compareStoriesByCreationDate($s1, $s2)
-	{
-		if ($s1->getDateCreation() == $s1->getDateCreation()) {
-			return 0;
-		}
-
-		return ($s1->getDateCreation() > $s2->getDateCreation()) ? +1 : -1;
-	}
 }

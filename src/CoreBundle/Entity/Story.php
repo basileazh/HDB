@@ -120,6 +120,15 @@ class Story
         $this->setDateLastModification(new \Datetime());
     }
 
+    // Compare deux Stories selon leur date de création. Renvoie 0 si égal, 1 si $s1 est plus récente, -1 si $s2 est plus récente
+    public static function compareStoriesByCreationDate($s1, $s2)
+    {
+        if ($s1->getDateCreation() == $s1->getDateCreation())
+            return 0;
+
+        return ($s1->getDateCreation() > $s2->getDateCreation()) ? +1 : -1;
+    }
+
     /**
      * Get id
      *

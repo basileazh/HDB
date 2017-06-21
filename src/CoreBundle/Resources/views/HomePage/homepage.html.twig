@@ -75,11 +75,7 @@
 {% endblock %}
 
 {% block rightcol %}
-<div id="add-friends-zone" class="row">
-	<h3>Ajouter des amis</h3>
-	<input id="friends-search-input" type="text" class="form-control" placeholder="Rechercher des amis">
-	<div id="friends-to-be-added"></div>
-</div>
+    {{ parent() }}
 {% endblock %}
 
 
@@ -87,24 +83,32 @@
 {{ parent() }}
 <script>
 
+    //On recupère les modèles que l'on va ajouter dynamiquement 
     var storyOpinionFormModel = "{{include('CoreBundle::HomePage/Models/storyOpinionFormModel.html.twig') | e('js')}}";
 	var storyDisplayModel = "{{include('CoreBundle::HomePage/Models/storyDisplayModel.html.twig') | e('js')}}";
+
+    //On récupère les paramètres envoyés par le contrôleur en JSON et on les parse
     var homepageStories = JSON.parse("{{ stories | e('js') }}");
 
     $(document).ready(function() {
+        //On affiche toutes les histoires
     	homepageStories.forEach(function(story)
     	{
+            //Si l'utilisateur est un personnage de l'histoire on aura un formulaire d'opinion
             if(story.userOpinion != 'notCharacter')
                 storyOpinionForm = storyOpinionFormModel.format(story.id);
             else
                 storyOpinionForm = '';
+
+            //Si il y a des personnages dans l'histoire on affiche leurs opinion
             if(story.charactersOpinions.length != 0)
             {
                 storyOpinions = "Les avis des personnages de cette histoire: Vraie : <span class='countTrue'>"+story.charactersOpinions.countTrue+"</span> - Fake : <span class='countFake'>"+story.charactersOpinions.countFake+"</span> - Je ne m'en rappelle plus : <span class='countDontRemember'>"+story.charactersOpinions.countDontRemember+"</span><br><div class='charactersOpinions' story-id='"+story.id+"'>";
+                //Ajoute toutes l'opinion de chaque personnage
                 storyOpinions+=giveCharactersOpinionsHTML(story.charactersOpinions.opinions);
                 storyOpinions+='</div>';
             }
-
+            //On ajoute l'histoire à partir du modèle en remplaçant les différents paramètres
     		$('#homepage-stories').append(storyDisplayModel.format(story.id, 
                                                                    story.title, 
                                                                    story.owner, 
@@ -117,50 +121,25 @@
 
             
 
-
+            //On coche dans le formulaire de notation la note que le user a mis
             userRating = story.userRating.length == 0 ? 0 : story.userRating;
             $('input[name="story-'+story.id+'-rating"][value="'+userRating+'"]').prop('checked', true);
             if(story.userOpinion != 'notCharacter')
             {
+                //Si le user est personnage on coche dans le formulaire d'opinion son opinion
                 userOpinion = story.userOpinion.length == 0 ? 'noOpinion' : story.userOpinion;
                 $('input[name="story-'+story.id+'-opinion"][value="'+userOpinion+'"]').prop('checked', true);
             }
     	});
 
-    	//On va chercher les bougs en BDD lorsque l'utilisateur effectue une recherche
-    	$('#add-friends-zone').on('keyup', 'input', function(e){
-    		if(e.which != 8)
-    		{
-    			$('#friends-to-be-added').empty();
-    			searchFriendsAjax($(this).val());
-    		}
-    	})
-    	.on('click', 'button.send-friend-request', function()
-    	{
-    		idBoug = $(this).attr('id-boug');
-    		$.ajax({
-				url: "{{path('friends_add_friend')}}",
-				method:"post",
-				data: {idBoug : idBoug}
-			})
-			.done(function(data)
-			{
-				divBoug = $('div.boug-to-be-added[id-boug="'+idBoug+'"]')
-				divBoug.append('Demande effectuée <span class="glyphicon glyphicon-ok"></span>');
-				divBoug.find('button.send-friend-request').remove();
-			});
-    	})
-    	.on('click', 'button.accept-friend-request', function()
-    	{
-    		acceptFriendRequestAjax($(this).attr('id-boug'));
-    	});
-
+        //Quand le user change la note qu'il donne à une histoire on appelle la focntion ajax
         $('#homepage-stories').on('change', 'input.story-rating-rate', function()
         {
             storyId = $(this).closest('div.story').attr('id-story');
             rate = $(this).val();
             rateStoryAjax(storyId, rate);
         })
+        //Quand il change son opinion on appelle la fonction ajax
         .on('change', 'input.story-opinion-choice', function()
         {
             storyId = $(this).closest('div.story').attr('id-story');
@@ -169,11 +148,14 @@
         });
     });
 
+    //Prorotype permettant de remplacer toutes les occurences d'un pattern recherché dans un string
     String.prototype.replaceAll = function(search, replacement)
     {
         var target = this;
         return target.split(search).join(replacement);
     };
+
+    //Prototype permettant d'envoyer les paramètres dans les modèles twig : les {0} seront remplacés dans le modèle par le premier paramètre de format(), {1} par le second ...
     String.prototype.format = function()
     {
         var formatted = this;
@@ -183,6 +165,7 @@
         return formatted;
     };
 
+    //Fonction Ajax permettant de changer la note donnée par le user à une story
     function rateStoryAjax(storyId, rate)
     {
         $.ajax({
@@ -192,15 +175,18 @@
         })
         .done(function(data)
         {
+            //On récupère les nouvelles notations
             newRating = data['newRating'];
             newRatingsCount = data['newRatingsCount'];
 
+            //On actualise la moyenne et le nombre de notes
             divStory = $('div.story[id-story="'+storyId+'"]');
             divStory.find('.story-rating-mean').empty().append(newRating);
             divStory.find('.story-rating-count').empty().append(newRatingsCount);
         });
     }
 
+    //Fonction Ajax oerettant de changer l'opinion données par le user à une story
     function giveOpinionAjax(storyId, opinion)
     {
         $.ajax({
@@ -210,54 +196,20 @@
         })
         .done(function(data)
         {
+            //On récupère les nouvelles opinion
             newOpinions = JSON.parse(data['newCharactersOpinions']);
             divOpinions = $('div.story[id-story="'+storyId+'"] .opinions');
-            // $('div.charactersOpinions[story-id="'+storyId+'"]').empty().append(giveCharactersOpinionsHTML(newOpinions.opinions));
 
+            //On remplace les opinions des personnages par les nouvelles
             divOpinions.find('.charactersOpinions').empty().append(giveCharactersOpinionsHTML(newOpinions.opinions));
+            //On actualise le nombre de fake, trues...
             divOpinions.find('.countTrue').empty().append(newOpinions.countTrue);
             divOpinions.find('.countFake').empty().append(newOpinions.countFake);
             divOpinions.find('.countDontRemember').empty().append(newOpinions.countDontRemember);
-
-            
-            // newRating = data['newRating'];
-            // newRatingsCount = data['newRatingsCount'];
-
-            // divStory = $('div.story[id-story="'+storyId+'"]');
-            // divStory.find('.story-rating-mean').empty().append(newRating);
-            // divStory.find('.story-rating-count').empty().append(newRatingsCount);
         });
     }
 
-
-    //Fonction pour aller chercher des bougs en BDD à partir d'un motif
-    function searchFriendsAjax(nameSearched)
-    {
-        $.ajax({
-            url: "{{path('friends_get_boug_list')}}",
-            method:"post",
-            data: {nameSearched : nameSearched}
-        })
-        .done(function(data)
-        {
-            nonFriendBougs = JSON.parse(data['nonFriendBougs']);
-            friendsRequestedByBoug = JSON.parse(data['friendsRequestedByBoug']);
-            bougsRequestingUser = JSON.parse(data['bougsRequestingUser']);
-            bougsRequestingUser.forEach(function(item)
-            {
-                $('#friends-to-be-added').append("<div class='boug-requesting-user' id-boug="+item["id"]+">"+item["username"]+" <button class='accept-friend-request' id-boug="+item["id"]+">Accepter la demande</button></div>");
-            });
-            friendsRequestedByBoug.forEach(function(item)
-            {
-                $('#friends-to-be-added').append("<div class='friend-requested-byrboug' id-boug="+item["id"]+">"+item["username"]+" Demande envoyée</div>");
-            });
-            nonFriendBougs.forEach(function(item)
-            {
-                $('#friends-to-be-added').append("<div class='boug-to-be-added' id-boug="+item["id"]+">"+item["username"]+" <button class='send-friend-request' id-boug="+item["id"]+">Ajouter</button></div>");
-            });
-        });
-    }
-
+    //Fonction donnant le HTML pour afficher toutes les opinions des personnages d'une histoire
     function giveCharactersOpinionsHTML(charactersOpinions)
     {
         var html = '';
@@ -289,7 +241,7 @@
 
 
 
-
+<!-- TODO : dégager ? -->
 
 <script type="text/javascript">
     // keep track of how many bougReadAccess fields have been rendered

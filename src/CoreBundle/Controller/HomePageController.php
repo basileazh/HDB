@@ -24,8 +24,6 @@ use Doctrine\ORM\EntityRepository;
 
 class HomePageController extends Controller
 {
-
-
   public function indexAction(Request $request)
   {
     // Récupération de l'User authentifié
@@ -159,9 +157,8 @@ class HomePageController extends Controller
       ->getManager()
       ->getRepository('CoreBundle:Story');
 
-    $stories = $storyRepository->findBy(
-        [ 'owner' => $user ]
-      );
+    $stories = $storyRepository->getHomePageStories($user);
+
     return $this->render('CoreBundle:HomePage:homepage.html.twig', [
       'user'  => $user,
       'storyForm' => $storyForm->createView(),
@@ -169,6 +166,7 @@ class HomePageController extends Controller
     ]);
   }
 
+  //Prépare un JSON à partir d'une liste d'histoires et l'utilisateur pour qui elles vont être affichées
   private function prepareStoriesJSON($stories, $user)
   {
     $json = '[';
@@ -187,12 +185,17 @@ class HomePageController extends Controller
                  "userRating" : "'.$repository->getStoryAccessForBoug($user, $story)->getRating().'",
                  "userOpinion" : "'.$storyservice->bougOpinionForStory($user, $story).'",
                  "charactersOpinions" : '.$storyservice->getStoryOpinionsJSON($story).'}';
+
+        //Rating donne la note moyenne ainsi que le nombre de notes données
+        //UserRating donne la note donnée par l'utilisateur
+        //UserOpinion donne l'opinion de l'utilisateur (Fake, Vraie, Je ne m'en souviens plus)
+        //Characters opinion donne un JSON avec toutes les opinions des utilisateurs ainsi que le nombre de fakes, de true...
+
+        //Si ce n'est pas la dernière histoire un rajoute une virgule dans le JSON         
        if(++$i !== $numStories)
         $json.= ',';
     }
     $json .= ']';
-    // dump($json);
-    // die;
     return $json;
   }
 }

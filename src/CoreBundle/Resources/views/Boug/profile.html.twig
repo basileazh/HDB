@@ -1,0 +1,9 @@
+{% extends "CoreBundle::layout.html.twig" %}
+
+{% block body %}
+	Liste des amis : <br>
+	{% for friend in friends %}
+		{{ friend.username }} <br>
+	{% endfor %}
+{% endblock %}
+
