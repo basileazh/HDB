@@ -6,13 +6,14 @@ core_homepage:
     path:     /homepage
     defaults: { _controller: CoreBundle:HomePage:homePage }
 
+core_friendsgroup_creation:
+    path:     /groups/create
+    defaults: { _controller: CoreBundle:FriendsGroup:creation }
+
 core_friendsgroup:
     path:     /groups/{idFriendsGroup}
     defaults: { _controller: CoreBundle:FriendsGroup:index }
 
-core_friendsgroup_creation:
-    path:     /groups/create
-    defaults: { _controller: CoreBundle:FriendsGroup:creation }
 
 core_story_add:
     path:   /story/add

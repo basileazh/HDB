@@ -167,10 +167,21 @@ class HomePageController extends Controller
     }
 
     // Récupération des Stories de l'User en cours
-    $storyRepository = $this
-      ->getDoctrine()
-      ->getManager()
-      ->getRepository('CoreBundle:Story');
+    $storyRepository = $em->getRepository('CoreBundle:Story');
+
+
+
+
+
+
+    $fgRepository = $em->getRepository('CoreBundle:FriendsGroup');
+    $groupaaa = $fgRepository->find(2);
+    dump($groupaaa);
+    die;
+
+
+
+
 
     $stories = $storyRepository->getHomePageStories($user);
 
