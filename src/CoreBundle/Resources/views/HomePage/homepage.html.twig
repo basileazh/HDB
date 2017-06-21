@@ -76,10 +76,27 @@
 {% endblock %}
 
 {% block rightcol %}
+
+{# Zone d'jout d'amis #}
 <div id="add-friends-zone" class="row">
 	<h3>Ajouter des amis</h3>
 	<input id="friends-search-input" type="text" class="form-control" placeholder="Rechercher des amis">
 	<div id="friends-to-be-added"></div>
+</div>
+
+{# Zone de création de groupe #}
+<div id="create-group-zone" class="row">
+	<h3>Créer un groupe</h3>
+        <form method="post" action="{{url('core_friendsgroup_creation')}}">
+		    <input name="creationGroupName" id="creation-group-name" type="text" class="form-control" placeholder="Nom du groupe">
+		    <label for="creation-group-members">
+		        Ajouter des amis au groupe
+            </label>
+		        <select name="creationGroupMembers[]" id="creation-group-members" class="creation-group-members form-control" multiple>
+		        </select>
+            <br>
+            <input type="submit" value="Créer Groupe" />
+        </form>
 </div>
 {% endblock %}
 
@@ -104,6 +121,23 @@
             $('input[name="story-'+story.id+'-rating"][value="'+userRating+'"]').prop('checked', true);
 
     	});
+
+    	// GESTION DE LA CREATION DE GROUPE
+         $.get("{{path('friends_get_user_friends_list')}}")
+            .done(function (friends) {
+                var friends = JSON.parse(friends);
+                friends.forEach(function(friend) {
+                    console.log("<option value="+friend.id+">"+friend.username+"</option>");
+                    $('#creation-group-members').append("<option value="+friend.id+">"+friend.username+"</option>");
+                });
+            });
+
+
+    	$(".creation-group-members").select2({
+            allowClear: true
+        });
+
+       
 
     	//On va chercher les bougs en BDD lorsque l'utilisateur effectue une recherche
     	$('#add-friends-zone').on('keyup', 'input', function(e){

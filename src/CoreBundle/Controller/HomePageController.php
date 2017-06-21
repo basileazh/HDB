@@ -24,9 +24,22 @@ use Doctrine\ORM\EntityRepository;
 
 class HomePageController extends Controller
 {
+  //
+  public function indexAction (Request $request)
+  {
+    // Récupération de l'User authentifié
+    $user = $this->get('security.token_storage')->getToken()->getUser();
+
+    if ($user == 'anon.') {
+
+      return $this->redirectToRoute('fos_user_security_login');
+    }
+
+    return $this->redirectToRoute('core_homepage');
+  }
 
 
-  public function indexAction(Request $request)
+  public function homePageAction(Request $request)
   {
     // Récupération de l'User authentifié
     $user = $this->get('security.token_storage')->getToken()->getUser();
@@ -151,11 +164,10 @@ class HomePageController extends Controller
         $em->persist($story);
         $em->flush();
 
-        // On redirige vers la page de visualisation de l'annonce nouvellement créée
         return $this->redirectToRoute('core_homepage');
     }
 
-     // Récupération des Stories de l'User en cours
+    // Récupération des Stories de l'User en cours
     $storyRepository = $this
       ->getDoctrine()
       ->getManager()

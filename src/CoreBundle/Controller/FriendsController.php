@@ -16,6 +16,31 @@ use CoreBundle\Entity\Friends;
 
 class FriendsController extends Controller
 {
+    // Réponse à un appel AJAX pour récupérer la liste d'amis d'un boug. Le boug en question doit avoir son username passsé
+    public function getUsernamesOfFriendsOfUserAction (Request $request)
+    {
+        // if($request->isXMLHttpRequest())
+        // {
+            $em = $this->getDoctrine()->getManager();
+            $friendsRepository = $em->getRepository('CoreBundle:Friends');
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+
+            $usernameSearched = $request->get('usernameSearched');
+            $friends = $friendsRepository->getFriendsOfBoug($user);
+
+            $friendsUsernames = [];
+            foreach ($friends as $friend) {
+                $friendsUsernames[] = [ 'username' => $friend->getUsername(),
+                                        'id'       => $friend->getId(),
+                                      ];
+            }
+
+            return new JsonResponse([json_encode($friendsUsernames)]);            
+        // }
+
+        // return new Response("Error : this is not an Ajax request", 400);
+    }
+
     public function getBougListAction(Request $request)
     {
         if($request->isXMLHttpRequest())

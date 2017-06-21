@@ -168,7 +168,7 @@ class FriendsGroup
      */
     public function addMember(\CoreBundle\Entity\Boug $member)
     {
-        $memeber->addGroup($this);
+        $member->addFriendsGroup($this);
         $this->members[] = $member;
 
         return $this;

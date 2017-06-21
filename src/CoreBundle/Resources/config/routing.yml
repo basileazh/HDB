@@ -1,9 +1,13 @@
-core_homepage:
+core_index:
     path:     /
     defaults: { _controller: CoreBundle:HomePage:index }
 
+core_homepage:
+    path:     /homepage
+    defaults: { _controller: CoreBundle:HomePage:homePage }
+
 core_friendsgroup:
-    path:     /groups
+    path:     /groups/{idFriendsGroup}
     defaults: { _controller: CoreBundle:FriendsGroup:index }
 
 core_friendsgroup_creation:
@@ -13,6 +17,10 @@ core_friendsgroup_creation:
 core_story_add:
     path:   /story/add
     defaults: {_controller: CoreBundle:Story:add}
+
+friends_get_user_friends_list:
+    path:   /friends/get-user-friends-usernames-list
+    defaults: {_controller: CoreBundle:Friends:getUsernamesOfFriendsOfUser}
 
 friends_get_boug_list:
     path:   /friends/get-boug-list
@@ -33,3 +41,6 @@ friends_accept_friend_request:
 story_rate:
     path: /story/rate
     defaults: {_controller: CoreBundle:Story:rate}
+
+
+
