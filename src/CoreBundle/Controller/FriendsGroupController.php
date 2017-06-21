@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 use CoreBundle\Entity\Story;
+use CoreBundle\Entity\Boug;
 use CoreBundle\Entity\FriendsGroup;
 
 class FriendsGroupController extends Controller
@@ -33,7 +34,8 @@ class FriendsGroupController extends Controller
 
     // On récupère le groupe depuis la BDD
     $friendsGroup = $friendsGroupRepository->find($idFriendsGroup);
-
+dump($friendsGroup->getMembers());
+die;
     // AJOUT DE STORY
     $StoryFormBuilder = $this->get('form.factory')->createBuilder(FormType::class);
 
@@ -45,7 +47,7 @@ class FriendsGroupController extends Controller
                     'entry_options' => [
                         'data_class' => null,
                         'class' => 'CoreBundle:Boug',
-                        'choices' => $friendsGroup->getMembers(),
+                        'choices' => [$user ],
                         'choice_label' => 'name',
                     ],
                     'allow_add' => true,

@@ -71,7 +71,6 @@
 	<div id="homepage-stories">
 	</div>
 
-
 {% endblock %}
 
 {% block rightcol %}
@@ -98,8 +97,9 @@
 
 {% block javascripts %}
 {{ parent() }}
-<script>
 
+
+<script>
     //On recupère les modèles que l'on va ajouter dynamiquement 
     var storyOpinionFormModel = "{{include('CoreBundle::HomePage/Models/storyOpinionFormModel.html.twig') | e('js')}}";
 	var storyDisplayModel = "{{include('CoreBundle::HomePage/Models/storyDisplayModel.html.twig') | e('js')}}";
@@ -108,6 +108,21 @@
     var homepageStories = JSON.parse("{{ stories | e('js') }}");
 
     $(document).ready(function() {
+
+        // GESTION DE LA CREATION DE GROUPE
+         $.get("{{path('friends_get_user_friends_list')}}")
+            .done(function (friends) {
+                var friends = JSON.parse(friends);
+                friends.forEach(function(friend) {
+                    $('#creation-group-members').append("<option value="+friend.id+">"+friend.username+"</option>");
+                });
+            });
+
+
+        $(".creation-group-members").select2({
+            allowClear: true
+        });
+
         //On affiche toutes les histoires
     	homepageStories.forEach(function(story)
     	{
@@ -148,22 +163,8 @@
                 userOpinion = story.userOpinion.length == 0 ? 'noOpinion' : story.userOpinion;
                 $('input[name="story-'+story.id+'-opinion"][value="'+userOpinion+'"]').prop('checked', true);
             }
-
-    	// GESTION DE LA CREATION DE GROUPE
-         $.get("{{path('friends_get_user_friends_list')}}")
-            .done(function (friends) {
-                var friends = JSON.parse(friends);
-                friends.forEach(function(friend) {
-                    console.log("<option value="+friend.id+">"+friend.username+"</option>");
-                    $('#creation-group-members').append("<option value="+friend.id+">"+friend.username+"</option>");
-                });
-            });
-
-
-    	$(".creation-group-members").select2({
-            allowClear: true
+    	
         });
-
 
         //Quand le user change la note qu'il donne à une histoire on appelle la focntion ajax
         $('#homepage-stories').on('change', 'input.story-rating-rate', function()
@@ -272,9 +273,6 @@
 
 </script>
 
-
-
-<!-- TODO : dégager ? -->
 
 <script type="text/javascript">
     // keep track of how many bougReadAccess fields have been rendered

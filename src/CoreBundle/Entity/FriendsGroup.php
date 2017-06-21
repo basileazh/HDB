@@ -47,7 +47,7 @@ class FriendsGroup
     /**
      * @var array
      *
-     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Boug", mappedBy="groups", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="CoreBundle\Entity\Boug", mappedBy="friendsGroups", cascade={"persist"})
      */
     private $members;
 
