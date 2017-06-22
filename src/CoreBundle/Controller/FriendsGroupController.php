@@ -34,8 +34,9 @@ class FriendsGroupController extends Controller
 
     // On récupère le groupe depuis la BDD
     $friendsGroup = $friendsGroupRepository->find($idFriendsGroup);
-dump($friendsGroup->getMembers());
-die;
+// dump($friendsGroup->getMembers());
+// die;
+
     // AJOUT DE STORY
     $StoryFormBuilder = $this->get('form.factory')->createBuilder(FormType::class);
 
@@ -143,8 +144,13 @@ die;
       
       $newFriendsGroup->setManager($user);
 
+
       $em->persist($newFriendsGroup);
       $em->flush();
+
+      // dump($em->getRepository('CoreBundle:FriendsGroup')->find($newFriendsGroup->getId())->getMembers());
+      // die;
+
 
       return $this->redirectToRoute('core_friendsgroup', ['idFriendsGroup' => $newFriendsGroup->getId()]);
     }

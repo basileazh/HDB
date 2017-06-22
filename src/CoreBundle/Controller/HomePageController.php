@@ -173,11 +173,12 @@ class HomePageController extends Controller
 
 
 
-
-    $fgRepository = $em->getRepository('CoreBundle:FriendsGroup');
-    $groupaaa = $fgRepository->find(2);
-    dump($groupaaa);
-    die;
+    // dump($user->getFriendsGroups());
+    // die;
+    // $fgRepository = $em->getRepository('CoreBundle:FriendsGroup');
+    // $groupaaa = $fgRepository->find(4);
+    // dump($groupaaa);
+    // die;
 
 
 

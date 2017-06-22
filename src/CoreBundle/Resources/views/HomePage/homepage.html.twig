@@ -106,8 +106,29 @@
 
     //On récupère les paramètres envoyés par le contrôleur en JSON et on les parse
     var homepageStories = JSON.parse("{{ stories | e('js') }}");
+    var bougIsCharacterCount = '{{ storyForm.bougIsCharacter|length }}';
+    var bougReadAccessCount = '{{ storyForm.bougReadAccess|length }}';
 
     $(document).ready(function() {
+
+        jQuery('#add-another-bougReadAccess').click(function(e) {
+            e.preventDefault();
+
+            var bougReadAccessList = jQuery('#bougReadAccess-fields-list');
+
+            // grab the prototype template
+            var newWidget = bougReadAccessList.attr('data-prototype');
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your bougReadAccess
+            // end name attribute looks like name="contact[bougReadAccess][2]"
+            newWidget = newWidget.replace(/__name__/g, bougReadAccessCount);
+            bougReadAccessCount++;
+
+            // create a new list element and add it to the list
+            var newLi = jQuery('<li></li>').html(newWidget);
+            newLi.appendTo(bougReadAccessList);
+        });
+
 
         // GESTION DE LA CREATION DE GROUPE
          $.get("{{path('friends_get_user_friends_list')}}")
@@ -270,74 +291,6 @@
         });
         return html;
     }
-
-</script>
-
-
-<script type="text/javascript">
-    // keep track of how many bougReadAccess fields have been rendered
-    var bougReadAccessCount = '{{ storyForm.bougReadAccess|length }}';
-
-    jQuery(document).ready(function() {
-        jQuery('#add-another-bougReadAccess').click(function(e) {
-            e.preventDefault();
-
-            var bougReadAccessList = jQuery('#bougReadAccess-fields-list');
-
-            // grab the prototype template
-            var newWidget = bougReadAccessList.attr('data-prototype');
-            // replace the "__name__" used in the id and name of the prototype
-            // with a number that's unique to your bougReadAccess
-            // end name attribute looks like name="contact[bougReadAccess][2]"
-            newWidget = newWidget.replace(/__name__/g, bougReadAccessCount);
-            bougReadAccessCount++;
-
-            // create a new list element and add it to the list
-            var newLi = jQuery('<li></li>').html(newWidget);
-            newLi.appendTo(bougReadAccessList);
-        });  
-
-    });
-
-    var bougIsCharacterCount = '{{ storyForm.bougIsCharacter|length }}';
-
-    jQuery(document).ready(function() {
-        jQuery('#add-another-bougIsCharacter').click(function(e) {
-            e.preventDefault();
-
-            var bougIsCharacterList = jQuery('#bougIsCharacter-fields-list');
-
-            // grab the prototype template
-            var newWidget = bougIsCharacterList.attr('data-prototype');
-            // replace the "__name__" used in the id and name of the prototype
-            // with a number that's unique to your bougIsCharacter
-            // end name attribute looks like name="contact[bougIsCharacter][2]"
-            newWidget = newWidget.replace(/__name__/g, bougIsCharacterCount);
-            bougIsCharacterCount++;
-
-            // create a new list element and add it to the list
-            var newLi = jQuery('<li></li>').html(newWidget);
-            newLi.appendTo(bougIsCharacterList);
-        });
-    }); 
-
-        // jQuery('#delete-another-bougReadAccess').click(function(e) {
-        //     e.preventDefault();
-
-        //     var bougReadAccessList = jQuery('#bougReadAccess-fields-list');
-
-        //     // grab the prototype template
-        //     var newWidget = bougReadAccessList.attr('data-prototype');
-        //     // replace the "__name__" used in the id and name of the prototype
-        //     // with a number that's unique to your bougReadAccess
-        //     // end name attribute looks like name="contact[bougReadAccess][2]"
-        //     newWidget = newWidget.replace(/__name__/g, bougReadAccessCount);
-        //     bougReadAccessCount++;
-
-        //     // create a new list element and add it to the list
-        //     var newLi = jQuery('<li></li>').html(newWidget);
-        //     newLi.appendTo(bougReadAccessList);
-        // });
 
 </script>
 
